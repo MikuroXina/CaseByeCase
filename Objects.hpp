@@ -17,6 +17,6 @@ public:
 
 	int getPosX() const;
 	int getPosY() const;
-}
+};
 
 #endif /* end of include guard: OBJECTS_HPP */

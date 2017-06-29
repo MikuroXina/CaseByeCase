@@ -14,6 +14,6 @@ private:
 public:
 	StageData(std::initializer_list<int>);
 	void mainLoop();
-}
+};
 
 #endif /* end of include guard: STAGEDATA_HPP */
