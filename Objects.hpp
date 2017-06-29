@@ -17,13 +17,11 @@ public:
 
 	int getPosX() const;
 	int getPosY() const;
+	virtual void moveTo(int&, int&);// move to (x, y)
 };
 
 class PlayerObject : public ObjectBase {
 public:
-	PlayerObject(int&, int&);
-	virtual ~PlayerObject();
-
 	virtual bool isCutUp();
 	virtual bool isCutDown();
 	virtual bool isCutLeft();
@@ -33,8 +31,10 @@ public:
 };
 
 class MediumCase : public ObjectBase {
+private:
+	int direction;// 0.Left, 1.Down, 2.Right, 3.Up
 public:
-	virtual ~MediumCase();
+	MediumCase(int&);// Direction
 
 	virtual bool isCutUp();
 	virtual bool isCutDown();
@@ -45,8 +45,10 @@ public:
 };
 
 class LargeCase : public ObjectBase {
+private:
+	int direction;//0.Left, 1.Down, 2.Right, 3.Up
 public:
-	virtual ~LargeCase();
+	LargeCase(int&); // Direction
 
 	virtual bool isCutUp();
 	virtual bool isCutDown();
@@ -58,8 +60,6 @@ public:
 
 class Wall : public ObjectBase {
 public:
-	virtual ~Wall();
-
 	virtual bool isCutUp();
 	virtual bool isCutDown();
 	virtual bool isCutLeft();
@@ -69,9 +69,10 @@ public:
 };
 
 class LockedDoor : public ObjectBase {
+private:
+	bool const *pFlag;
 public:
-	LockedDoor(bool const&);
-	virtual ~LockedDoor();
+	LockedDoor(bool const*);
 
 	virtual bool isCutUp();
 	virtual bool isCutDown();

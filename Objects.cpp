@@ -2,60 +2,76 @@
 
 // ObjectBase member functions
 int ObjectBase::getPosX() const {
-	return posX:
+	return posX;
 }
 int ObjectBase::getPosY() const {
 	return posY;
 }
 
+void ObjectBase::moveTo(int& x, int& y) {
+	posX = x;
+	posY = y;
+}
+
 // PlayerObject member functions
-PlayerObject::PlayerObject(int&, int&);
-virtual PlayerObject::~PlayerObject();
+bool PlayerObject::isCutUp() { return false; }
+bool PlayerObject::isCutDown() { return false; }
+bool PlayerObject::isCutLeft() { return false; }
+bool PlayerObject::isCutRight() { return false; }
 
-virtual bool PlayerObject::isCutUp();
-virtual bool PlayerObject::isCutDown();
-virtual bool PlayerObject::isCutLeft();
-virtual bool PlayerObject::isCutRight();
-
-virtual void PlayerObject::render();
+void PlayerObject::render() {
+	;
+}
 
 // MediumCase member functions
-virtual MediumCase::~MediumCase();
+MediumCase::MediumCase(int& dir) : direction(dir) {
+	;
+}
 
-virtual bool MediumCase::isCutUp();
-virtual bool MediumCase::isCutDown();
-virtual bool MediumCase::isCutLeft();
-virtual bool MediumCase::isCutRight();
+bool MediumCase::isCutUp() { return direction == 3; }
+bool MediumCase::isCutDown() { return direction == 1; }
+bool MediumCase::isCutLeft() { return direction == 0; }
+bool MediumCase::isCutRight() { return direction == 2; }
 
-virtual void MediumCase::render();
+void MediumCase::render() {
+	;
+}
 
 // LargeCase member functions
-virtual LargeCase::~LargeCase();
+LargeCase::LargeCase(int& dir) : direction(dir) {
+	;
+}
 
-virtual bool LargeCase::isCutUp();
-virtual void LargeCase::isCutDown();
-virtual bool LargeCase::isCutLeft();
-virtual bool LargeCase::isCutRight();
+bool LargeCase::isCutUp() { return direction == 3; }
+bool LargeCase::isCutDown() { return direction == 1; }
+bool LargeCase::isCutLeft() { return direction == 0; }
+bool LargeCase::isCutRight() { return direction == 2; }
 
-virtual void LargeCase::render();
+void LargeCase::render() {
+	;
+}
 
 // Wall member functions
-virtual Wall::~Wall();
+bool Wall::isCutUp() { return false; }
+bool Wall::isCutDown() { return false; }
+bool Wall::isCutLeft() { return false; }
+bool Wall::isCutRight() { return false; }
 
-virtual bool Wall::isCutUp();
-virtual void Wall::isCutDown();
-virtual bool Wall::isCutLeft();
-virtual bool Wall::isCutRight();
-
-virtual void Wall::render();
+void Wall::render() {
+	;
+}
 
 // LockedDoor member functions
-LockedDoor::LockedDoor(bool const&);
-virtual LockedDoor::~LockedDoor();
+LockedDoor::LockedDoor(bool const* flag) : pFlag(flag) {
+	;
+}
 
-virtual bool LockedDoor::isCutUp();
-virtual void LockedDoor::isCutDown();
-virtual bool LockedDoor::isCutLeft();
-virtual bool LockedDoor::isCutRight();
+// It don't have a collision if unlocked the door
+bool LockedDoor::isCutUp() { return !(*pFlag); }
+bool LockedDoor::isCutDown() { return !(*pFlag); }
+bool LockedDoor::isCutLeft() { return !(*pFlag); }
+bool LockedDoor::isCutRight() { return !(*pFlag); }
 
-virtual void LockedDoor::render();
+void LockedDoor::render() {
+	;
+}
