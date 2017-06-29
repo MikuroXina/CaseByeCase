@@ -15,6 +15,8 @@ StageData::StageData(std::initializer_list<int> tileMap) {
 			player= new PlayerObject(x, y);
 
 			isPlayerMade = true;
+		} else if (i == 3) {
+
 		} else if (i == 4) {
 
 		} else if (i == 5) {
@@ -31,6 +33,9 @@ StageData::StageData(std::initializer_list<int> tileMap) {
 
 StageData::~StageData() {
 	delete player;
+	for(auto& object : objects) {
+		delete object;
+	}
 }
 
 void StageData::mainLoop() {
