@@ -5,7 +5,7 @@ class ObjectBase {
 private:
 	int posX=0, posY=0;
 public:
-	virtual ObjectBase() = default;
+	ObjectBase() = default;
 	virtual ~ObjectBase() = default;
 
 	virtual void moveUp() = 0;
@@ -17,6 +17,19 @@ public:
 
 	int getPosX() const;
 	int getPosY() const;
+};
+
+class PlayerObject : public ObjectBase {
+public:
+	PlayerObject(int&, int&);
+	virtual ~ObjectBase();
+
+	virtual void moveUp();
+	virtual void moveDown();
+	virtual void moveLeft();
+	virtual void moveRight();
+
+	virtual void render();
 };
 
 #endif /* end of include guard: OBJECTS_HPP */
