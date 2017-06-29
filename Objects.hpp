@@ -8,10 +8,10 @@ public:
 	ObjectBase() = default;
 	virtual ~ObjectBase() = default;
 
-	virtual void isCutUp() = 0;
-	virtual void isCutDown() = 0;
-	virtual void isCutLeft() = 0;
-	virtual void isCutRight() = 0;
+	virtual bool isCutUp() = 0;
+	virtual bool isCutDown() = 0;
+	virtual bool isCutLeft() = 0;
+	virtual bool isCutRight() = 0;
 
 	virtual void render() = 0;
 
@@ -22,7 +22,7 @@ public:
 class PlayerObject : public ObjectBase {
 public:
 	PlayerObject(int&, int&);
-	virtual ~ObjectBase();
+	virtual ~PlayerObject();
 
 	virtual bool isCutUp();
 	virtual bool isCutDown();
@@ -34,7 +34,7 @@ public:
 
 class MediumCase : public ObjectBase {
 public:
-	virtual ~ObjectBase();
+	virtual ~MediumCase();
 
 	virtual bool isCutUp();
 	virtual bool isCutDown();
@@ -46,10 +46,10 @@ public:
 
 class LargeCase : public ObjectBase {
 public:
-	virtual ~ObjectBase();
+	virtual ~LargeCase();
 
 	virtual bool isCutUp();
-	virtual void isCutDown();
+	virtual bool isCutDown();
 	virtual bool isCutLeft();
 	virtual bool isCutRight();
 
@@ -58,10 +58,10 @@ public:
 
 class Wall : public ObjectBase {
 public:
-	virtual ~ObjectBase();
+	virtual ~Wall();
 
 	virtual bool isCutUp();
-	virtual void isCutDown();
+	virtual bool isCutDown();
 	virtual bool isCutLeft();
 	virtual bool isCutRight();
 
@@ -71,10 +71,10 @@ public:
 class LockedDoor : public ObjectBase {
 public:
 	LockedDoor(bool const&);
-	virtual ~ObjectBase();
+	virtual ~LockedDoor();
 
 	virtual bool isCutUp();
-	virtual void isCutDown();
+	virtual bool isCutDown();
 	virtual bool isCutLeft();
 	virtual bool isCutRight();
 
