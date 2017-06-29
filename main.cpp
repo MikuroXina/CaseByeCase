@@ -49,7 +49,7 @@ int main(int argc, const char **argv) {
                     0, 0, 0, 0, 0,};
 
   // Start the game
-  stage1.mainLoop();
+  stage1.mainLoop(window);
 
   std::cout<< "Exiting..."<<std::endl;
 

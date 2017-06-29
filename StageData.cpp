@@ -6,22 +6,24 @@
 #include "StageData.hpp"
 #include "Objects.hpp"
 
-StageData::StageData(std::initializer_list<int> tileMap) {
-	bool isPlayerMade = false
-	for(int i=0; i<tileMap.count(); i+=1) {
-		if (i == 2 && !isPlayerMade) {
+StageData::StageData(std::initializer_list<int> tileMapArg) {
+	bool isPlayerMade = false;
+	std::vector<int> tileMap(tileMapArg);
+	for(int i=0; i<tileMap.size(); i+=1) {
+		if (tileMap[i] == 2 && !isPlayerMade) {
 			int x = static_cast<int>(i / 3);
 			int y = static_cast<int>(i % 3);
-			player= new PlayerObject(x, y);
+			player= new PlayerObject;
+			player->moveTo(x, y);
 
 			isPlayerMade = true;
-		} else if (i == 3) {
+		} else if (tileMap[i] == 3) {
 
-		} else if (i == 4) {
+		} else if (tileMap[i] == 4) {
 
-		} else if (i == 5) {
+		} else if (tileMap[i] == 5) {
 
-		} else if (i == 6) {
+		} else if (tileMap[i] == 6) {
 
 		}
 	}
@@ -38,7 +40,7 @@ StageData::~StageData() {
 	}
 }
 
-void StageData::mainLoop() {
+void StageData::mainLoop(SDL_Window *window) {
 	SDL_Event event;
   bool quit=false;
   while (!quit) {
@@ -71,7 +73,7 @@ void StageData::mainLoop() {
     glClear(GL_COLOR_BUFFER_BIT);
 
 		for(auto& object : objects) {
-			object.render();
+			object->render();
 		}
 
     SDL_GL_SwapWindow(window);

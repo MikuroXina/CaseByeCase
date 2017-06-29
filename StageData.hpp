@@ -17,7 +17,7 @@ private:
 public:
 	StageData(std::initializer_list<int>);
 	~StageData();
-	void mainLoop();
+	void mainLoop(SDL_Window*);
 };
 
 #endif /* end of include guard: STAGEDATA_HPP */
