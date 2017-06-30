@@ -9,16 +9,24 @@
 StageData::StageData(std::vector<int>&& tileMap) {
 	bool isPlayerMade = false;
 	for(int i=0; i<tileMap.size(); i+=1) {
-		if (tileMap[i] == 2 && !isPlayerMade) {
-			int x = i / 3;
-			int y = i % 3;
+		if (tileMap[i] == 0) {
+			auto newWall = new Wall;
+			int x = i / 5, y = i % 5;
+			newWall->moveTo(x, y);
+			objects.push_back(newWall);
+			std::cout << "Made a wall at " << i << std::endl;
+		} else if (tileMap[i] == 2 && !isPlayerMade) {
+			int x = i / 5;
+			int y = i % 5;
 			player= new PlayerObject;
 			player->moveTo(x, y);
 
 			std::cout << "Made a player at " << i << std::endl;
 			isPlayerMade = true;
 		} else if (tileMap[i] == 3) {
-
+			goalPosX = i / 5;
+			goalPosY = i % 5;
+			std::cout << "The goal at ("<<goalPosX<<","<<goalPosY<<")"<< std::endl;
 		} else if (tileMap[i] == 4) {
 
 		} else if (tileMap[i] == 5) {

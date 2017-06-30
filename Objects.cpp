@@ -24,7 +24,7 @@ bool PlayerObject::isCutRight() { return false; }
 
 void PlayerObject::render() {
 	glColor3f(1.0, 1.0, 0);
-	glRectd(40.0, 40.0, 0.0, 0.0);
+	glRectd(posY*100+35, posX*100+35, posY*100+65, posX*100+65);
 }
 
 // MediumCase member functions
@@ -62,7 +62,26 @@ bool Wall::isCutLeft() { return false; }
 bool Wall::isCutRight() { return false; }
 
 void Wall::render() {
-	;
+	glColor3f(0.5, 0.8, 1);
+	glBegin(GL_LINES);
+	glVertex2i(posY*100, posX*100);
+	glVertex2i(posY*100, (posX+1)*100);
+
+	glVertex2i(posY*100, (posX+1)*100);
+	glVertex2i((posY+1)*100, (posX+1)*100);
+
+	glVertex2i((posY+1)*100, (posX+1)*100);
+	glVertex2i((posY+1)*100, posX*100);
+
+	glVertex2i((posY+1)*100, posX*100);
+	glVertex2i(posY*100, posX*100);
+
+	glVertex2i(posY*100, posX*100);
+	glVertex2i((posY+1)*100, (posX+1)*100);
+
+	glVertex2i(posY*100, (posX+1)*100);
+	glVertex2i((posY+1)*100, posX*100);
+	glEnd();
 }
 
 // LockedDoor member functions

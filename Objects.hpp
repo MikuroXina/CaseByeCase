@@ -2,7 +2,7 @@
 #define OBJECTS_HPP
 
 class ObjectBase {
-private:
+protected:
 	int posX=0, posY=0;
 public:
 	ObjectBase() = default;

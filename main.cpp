@@ -30,8 +30,8 @@ int main(int argc, const char **argv) {
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-  constexpr Uint32 width = 512;
-  constexpr Uint32 height = 512;
+  constexpr Uint32 width = 500;
+  constexpr Uint32 height = 500;
   window = SDL_CreateWindow("Case Bye Case", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
   if (!window) {
     std::cout<<"Unable to create a window!"<<std::endl;
