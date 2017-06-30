@@ -30,7 +30,9 @@ int main(int argc, const char **argv) {
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-  window = SDL_CreateWindow("Case Bye Case", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 512, 512, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+  constexpr Uint32 width = 512;
+  constexpr Uint32 height = 512;
+  window = SDL_CreateWindow("Case Bye Case", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
   if (!window) {
     std::cout<<"Unable to create a window!"<<std::endl;
   }
@@ -41,12 +43,14 @@ int main(int argc, const char **argv) {
 
   SDL_GL_SetSwapInterval(1);
 
+  glViewport(0, 0, width, height);
+
   // Setup the game
-  StageData stage1{ 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0,
-                    2, 1, 1, 1, 3,
-                    0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0,};
+  StageData stage1({ 0, 0, 0, 0, 0,
+                     0, 0, 0, 0, 0,
+                     2, 1, 1, 1, 3,
+                     0, 0, 0, 0, 0,
+                     0, 0, 0, 0, 0,});
 
   // Start the game
   stage1.mainLoop(window);

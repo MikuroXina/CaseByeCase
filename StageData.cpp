@@ -6,16 +6,16 @@
 #include "StageData.hpp"
 #include "Objects.hpp"
 
-StageData::StageData(std::initializer_list<int> tileMapArg) {
+StageData::StageData(std::vector<int>&& tileMap) {
 	bool isPlayerMade = false;
-	std::vector<int> tileMap(tileMapArg);
 	for(int i=0; i<tileMap.size(); i+=1) {
 		if (tileMap[i] == 2 && !isPlayerMade) {
-			int x = static_cast<int>(i / 3);
-			int y = static_cast<int>(i % 3);
+			int x = i / 3;
+			int y = i % 3;
 			player= new PlayerObject;
 			player->moveTo(x, y);
 
+			std::cout << "Made a player at " << i << std::endl;
 			isPlayerMade = true;
 		} else if (tileMap[i] == 3) {
 
@@ -28,7 +28,7 @@ StageData::StageData(std::initializer_list<int> tileMapArg) {
 		}
 	}
 
-	if (isPlayerMade) {
+	if (!isPlayerMade) {
 		std::cout<<"Error! The player creating has failed!"<<std::endl;
 	}
 }
@@ -68,13 +68,16 @@ void StageData::mainLoop(SDL_Window *window) {
       }
     }
 
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+
     // Render
-    glClearColor(0.5, 0.5, 0.5, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
 		for(auto& object : objects) {
 			object->render();
 		}
+		player->render();
 
     SDL_GL_SwapWindow(window);
 

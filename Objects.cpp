@@ -1,3 +1,6 @@
+#include <OpenGL/gl.h>
+#include <iostream>
+
 #include "Objects.hpp"
 
 // ObjectBase member functions
@@ -20,7 +23,8 @@ bool PlayerObject::isCutLeft() { return false; }
 bool PlayerObject::isCutRight() { return false; }
 
 void PlayerObject::render() {
-	;
+	glColor3f(1.0, 1.0, 0);
+	glRectd(40.0, 40.0, 0.0, 0.0);
 }
 
 // MediumCase member functions
