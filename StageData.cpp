@@ -79,10 +79,6 @@ void StageData::mainLoop(SDL_Window *window) {
           quit=true;
 					break;
 				case SDLK_DOWN:
-					if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-						std::cout<<"Error to play lightSE"<<std::endl;
-					}
-
 					findObjectsAt(&stack, player->getPosX() + 1, player->getPosY());
 
 					flag = (player->getPosX() >= 4);
@@ -104,13 +100,16 @@ void StageData::mainLoop(SDL_Window *window) {
 							}
 						}
 						stack.clear();
+						if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+							std::cout<<"Error to play lightSE"<<std::endl;
+						}
+					} else {
+						if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
+							std::cout<<"Error to play heavySE"<<std::endl;
+						}
 					}
 					break;
 				case SDLK_UP:
-					if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-						std::cout<<"Error to play lightSE"<<std::endl;
-					}
-
 					findObjectsAt(&stack, player->getPosX() - 1, player->getPosY());
 
 					flag = (player->getPosX() <= 0);
@@ -132,13 +131,16 @@ void StageData::mainLoop(SDL_Window *window) {
 							}
 						}
 						stack.clear();
+						if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+							std::cout<<"Error to play lightSE"<<std::endl;
+						}
+					} else {
+						if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
+							std::cout<<"Error to play heavySE"<<std::endl;
+						}
 					}
 					break;
 				case SDLK_LEFT:
-					if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-						std::cout<<"Error to play lightSE"<<std::endl;
-					}
-
 					findObjectsAt(&stack, player->getPosX(), player->getPosY() - 1);
 
 					flag = (player->getPosY() <= 0);
@@ -160,13 +162,16 @@ void StageData::mainLoop(SDL_Window *window) {
 							}
 						}
 						stack.clear();
+						if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+							std::cout<<"Error to play lightSE"<<std::endl;
+						}
+					} else {
+						if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
+							std::cout<<"Error to play heavySE"<<std::endl;
+						}
 					}
 					break;
 				case SDLK_RIGHT:
-					if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-						std::cout<<"Error to play lightSE"<<std::endl;
-					}
-
 					findObjectsAt(&stack, player->getPosX(), player->getPosY() + 1);
 
 					flag = (player->getPosY() >= 4);
@@ -188,13 +193,18 @@ void StageData::mainLoop(SDL_Window *window) {
 							}
 						}
 						stack.clear();
+						if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+							std::cout<<"Error to play lightSE"<<std::endl;
+						}
+					} else {
+						if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
+							std::cout<<"Error to play heavySE"<<std::endl;
+						}
 					}
 					break;
         }
       }
     }
-
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
     // Render
     glClearColor(0.0, 0.0, 0.0, 1.0);
