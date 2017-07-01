@@ -31,7 +31,7 @@ void PlayerObject::render() {
 }
 
 // MediumCase member functions
-MediumCase::MediumCase(int& dir) : direction(dir) {
+MediumCase::MediumCase(int& dir, bool key) : direction(dir), isKey(key) {
 	size = 1;
 }
 
@@ -41,7 +41,11 @@ bool MediumCase::isCutLeft() { return direction == 0; }
 bool MediumCase::isCutRight() { return direction == 2; }
 
 void MediumCase::render() {
-	glColor3f(1.0, 0.6, 0);
+	if (isKey) {
+		glColor3f(1.0, 0.6, 0);
+	} else {
+		glColor3f(0.5, 0.8, 1);
+	}
 	glBegin(GL_LINES);
 
 	if (direction != 0) {
@@ -66,8 +70,12 @@ void MediumCase::render() {
 	glEnd();
 }
 
+bool MediumCase::isKeyCase() const {
+	return isKey;
+}
+
 // LargeCase member functions
-LargeCase::LargeCase(int& dir) : direction(dir) {
+LargeCase::LargeCase(int& dir, bool key) : direction(dir), isKey(key) {
 	size = 2;
 }
 
@@ -77,7 +85,11 @@ bool LargeCase::isCutLeft() { return direction == 0; }
 bool LargeCase::isCutRight() { return direction == 2; }
 
 void LargeCase::render() {
-	glColor3f(1.0, 0.6, 0);
+	if (isKey) {
+		glColor3f(1.0, 0.6, 0);
+	} else {
+		glColor3f(0.5, 0.8, 1);
+	}
 	glBegin(GL_LINES);
 
 	if (direction != 0) {
@@ -100,6 +112,10 @@ void LargeCase::render() {
 		glVertex2i(posY*100+10, posX*100+10);
 	}
 	glEnd();
+}
+
+bool LargeCase::isKeyCase() const {
+	return isKey;
 }
 
 // Wall member functions

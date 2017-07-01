@@ -11,6 +11,7 @@ private:
 	// TileMap's format:
 	// 5x5, 0.Wall, 1.Space, 2.Start, 3.Goal, 4.Locked Door
 	// 5~8.Medium Case(Left, Down, Right, Up), 9~12.Large Case(Left, Down, Right, Up)
+	// 13~16.Medium Key Case(Left, Down, Right, Up), 17~20.Large Key Case(Left, Down, Right, Up)
 	class PlayerObject *player;
 	std::vector<int> tileMap;
 	std::vector<ObjectBase*> objects;

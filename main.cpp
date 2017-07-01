@@ -51,6 +51,7 @@ int main() {
   // TileMap's format:
 	// 5x5, 0.Wall, 1.Space, 2.Start, 3.Goal, 4.Locked Door
 	// 5~8.Medium Case(Left, Down, Right, Up), 9~12.Large Case(Left, Down, Right, Up)
+  // 13~16.Medium Key Case(Left, Down, Right, Up), 17~20.Large Key Case(Left, Down, Right, Up)
   StageData stage1({
     0, 0, 0, 0, 0,
     0, 0, 0, 0, 0,
@@ -71,12 +72,21 @@ int main() {
 
   StageData stage3({
     0, 0, 0, 0, 0,
-    1, 1, 9, 0, 0,
+    1, 1,17, 0, 0,
     2, 1, 1, 4, 3,
-    1, 5, 1, 0, 0,
+    1,13, 1, 0, 0,
     0, 0, 0, 0, 0,
   });
   while (stage3.mainLoop(window)) {;}
+
+  StageData stage4({
+    0, 0, 0, 0, 0,
+    0, 2, 1, 1, 0,
+    0, 1,20, 1, 0,
+    0,16, 1, 9, 4,
+    0, 0, 0, 0, 3,
+  });
+  while (stage4.mainLoop(window)) {;}
 
   std::cout<< "Exiting..."<<std::endl;
 

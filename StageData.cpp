@@ -50,17 +50,31 @@ bool StageData::mainLoop(SDL_Window *window) {
 		} else if (tileMap[i] >= 5 && tileMap[i] <= 8) {
 			auto direction = tileMap[i] - 5;
 			int x = i / 5, y = i % 5;
-			auto newMediumCase = new MediumCase(direction);
+			auto newMediumCase = new MediumCase(direction, false);
 			newMediumCase->moveTo(x, y);
 			objects.push_back(newMediumCase);
 			std::cout << "Made a medium case at " << i << ". Dir:" << direction << std::endl;
 		} else if (tileMap[i] >= 9 && tileMap[i] <= 12) {
 			auto direction = tileMap[i] - 9;
 			int x = i / 5, y = i % 5;
-			auto newLargeCase = new LargeCase(direction);
+			auto newLargeCase = new LargeCase(direction, false);
 			newLargeCase->moveTo(x, y);
 			objects.push_back(newLargeCase);
 			std::cout << "Made a large case at " << i << ". Dir:" << direction << std::endl;
+		} else if (tileMap[i] >= 13 && tileMap[i] <= 16) {
+			auto direction = tileMap[i] - 13;
+			int x = i / 5, y = i % 5;
+			auto newLargeCase = new MediumCase(direction, true);
+			newLargeCase->moveTo(x, y);
+			objects.push_back(newLargeCase);
+			std::cout << "Made a medium key case at " << i << ". Dir:" << direction << std::endl;
+		} else if (tileMap[i] >= 17 && tileMap[i] <= 20) {
+			auto direction = tileMap[i] - 17;
+			int x = i / 5, y = i % 5;
+			auto newLargeCase = new LargeCase(direction, true);
+			newLargeCase->moveTo(x, y);
+			objects.push_back(newLargeCase);
+			std::cout << "Made a large key case at " << i << ". Dir:" << direction << std::endl;
 		}
 	}
 
@@ -90,7 +104,9 @@ bool StageData::mainLoop(SDL_Window *window) {
 
 		// If unlocked the key
 		if (player->holdedMedCase != nullptr && player->holdedLarCase != nullptr) {
-			isDoorLocked = false;
+			if (player->holdedMedCase->isKeyCase() && player->holdedLarCase->isKeyCase()) {
+				isDoorLocked = false;
+			}
 		}
 
     // Events
@@ -159,7 +175,7 @@ void StageData::moveLeft() {
 		if (player->holdedMedCase != nullptr) {
 			flag = (flag ? true : object->getSize() <= 1);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = (flag ? true : object->getSize() == 1);
+			flag = (flag ? true : object->getSize() <= 2);
 		}
 	}
 	stack.clear();
@@ -175,8 +191,8 @@ void StageData::moveLeft() {
 						player->holdedMedCase->moveTo(stackX, stackY);
 					} else {
 						player->holdedMedCase = nullptr;
-						player->holdedLarCase = nullptr;
 					}
+					player->holdedLarCase = nullptr;
 				} else {
 					player->holdedLarCase = nullptr;
 				}
@@ -224,7 +240,7 @@ void StageData::moveDown() {
 		if (player->holdedMedCase != nullptr) {
 			flag = (flag ? true : object->getSize() <= 1);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = (flag ? true : object->getSize() == 1);
+			flag = (flag ? true : object->getSize() <= 2);
 		}
 	}
 	stack.clear();
@@ -240,8 +256,8 @@ void StageData::moveDown() {
 						player->holdedMedCase->moveTo(stackX, stackY);
 					} else {
 						player->holdedMedCase = nullptr;
-						player->holdedLarCase = nullptr;
 					}
+					player->holdedLarCase = nullptr;
 				} else {
 					player->holdedLarCase = nullptr;
 				}
@@ -289,7 +305,7 @@ void StageData::moveRight() {
 		if (player->holdedMedCase != nullptr) {
 			flag = (flag ? true : object->getSize() <= 1);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = (flag ? true : object->getSize() == 1);
+			flag = (flag ? true : object->getSize() <= 2);
 		}
 	}
 	stack.clear();
@@ -305,8 +321,8 @@ void StageData::moveRight() {
 						player->holdedMedCase->moveTo(stackX, stackY);
 					} else {
 						player->holdedMedCase = nullptr;
-						player->holdedLarCase = nullptr;
 					}
+					player->holdedLarCase = nullptr;
 				} else {
 					player->holdedLarCase = nullptr;
 				}
@@ -354,7 +370,7 @@ void StageData::moveUp() {
 		if (player->holdedMedCase != nullptr) {
 			flag = (flag ? true : object->getSize() <= 1);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = (flag ? true : object->getSize() == 1);
+			flag = (flag ? true : object->getSize() <= 2);
 		}
 	}
 	stack.clear();
@@ -370,8 +386,8 @@ void StageData::moveUp() {
 						player->holdedMedCase->moveTo(stackX, stackY);
 					} else {
 						player->holdedMedCase = nullptr;
-						player->holdedLarCase = nullptr;
 					}
+					player->holdedLarCase = nullptr;
 				} else {
 					player->holdedLarCase = nullptr;
 				}

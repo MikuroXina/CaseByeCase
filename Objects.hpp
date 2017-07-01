@@ -39,8 +39,9 @@ public:
 class MediumCase : public ObjectBase {
 private:
 	int direction;// 0.Left, 1.Down, 2.Right, 3.Up
+	bool isKey=false;
 public:
-	MediumCase(int&);// Direction
+	MediumCase(int&, bool);// Direction, isKey
 	virtual ~MediumCase() = default;
 
 	virtual bool isCutUp();
@@ -49,13 +50,16 @@ public:
 	virtual bool isCutRight();
 
 	virtual void render();
+
+	bool isKeyCase() const;
 };
 
 class LargeCase : public ObjectBase {
 private:
 	int direction;//0.Left, 1.Down, 2.Right, 3.Up
+	bool isKey=false;
 public:
-	LargeCase(int&); // Direction
+	LargeCase(int&, bool); // Direction, isKey
 	virtual ~LargeCase() = default;
 
 	virtual bool isCutUp();
@@ -64,6 +68,8 @@ public:
 	virtual bool isCutRight();
 
 	virtual void render();
+
+	bool isKeyCase() const;
 };
 
 class Wall : public ObjectBase {
