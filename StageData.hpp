@@ -16,8 +16,14 @@ private:
 	bool isDoorLocked = true;
 	int goalPosX, goalPosY;
 	SDL_Renderer *renderer;
+	std::vector<ObjectBase*> stack;
+	Mix_Chunk *lightSE, *heavySE, *goalSE;
 
 	void findObjectsAt(std::vector<ObjectBase*>*, int, int);
+	void moveLeft();
+	void moveDown();
+	void moveRight();
+	void moveUp();
 public:
 	StageData(std::vector<int>&&);
 	~StageData();

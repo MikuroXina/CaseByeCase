@@ -65,13 +65,9 @@ void StageData::findObjectsAt(std::vector<ObjectBase*> *stack, int x, int y) {
 
 void StageData::mainLoop(SDL_Window *window) {
 	// Audio setup
-	Mix_Chunk *lightSE, *heavySE, *goalSE;
-
 	lightSE = Mix_LoadWAV("lightSE.wav");
 	heavySE = Mix_LoadWAV("heavySE.wav");
 	goalSE = Mix_LoadWAV("goalSE.wav");
-
-	std::vector<ObjectBase*> stack;
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
@@ -100,166 +96,16 @@ void StageData::mainLoop(SDL_Window *window) {
           quit=true;
 					break;
 				case SDLK_DOWN:
-					findObjectsAt(&stack, player->getPosX() + 1, player->getPosY());
-
-					flag = (player->getPosX() >= 4);
-					for (auto& object : stack) {
-						flag = (flag ? true : !(object->isCutUp()));
-					}
-					stack.clear();
-
-					if (!flag) {
-						stackX=player->getPosX() + 1;
-						stackY=player->getPosY();
-						player->moveTo(stackX, stackY);
-						findObjectsAt(&stack, player->getPosX(), player->getPosY());
-						for (auto& object : stack) {
-							if (!(object->isCutDown())) {
-								stackX=player->getPosX();
-								stackY=player->getPosY();
-								object->moveTo(stackX, stackY);
-							}
-						}
-						stack.clear();
-						if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-							std::cout<<"Error to play lightSE"<<std::endl;
-						}
-					} else {
-						if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
-							std::cout<<"Error to play heavySE"<<std::endl;
-						}
-					}
+					moveDown();
 					break;
 				case SDLK_UP:
-					findObjectsAt(&stack, player->getPosX() - 1, player->getPosY());
-
-					flag = (player->getPosX() <= 0);
-					for (auto& object : stack) {
-						flag = (flag ? true : !(object->isCutDown()));
-					}
-					stack.clear();
-
-					if (!flag) {
-						stackX=player->getPosX() - 1;
-						stackY=player->getPosY();
-						player->moveTo(stackX, stackY);
-						findObjectsAt(&stack, player->getPosX(), player->getPosY());
-						for (auto& object : stack) {
-							if (!(object->isCutUp())) {
-								stackX=player->getPosX();
-								stackY=player->getPosY();
-								object->moveTo(stackX, stackY);
-							}
-						}
-						stack.clear();
-						if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-							std::cout<<"Error to play lightSE"<<std::endl;
-						}
-					} else {
-						if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
-							std::cout<<"Error to play heavySE"<<std::endl;
-						}
-					}
+					moveUp();
 					break;
 				case SDLK_LEFT:
-					findObjectsAt(&stack, player->getPosX(), player->getPosY() - 1);
-
-					flag = (player->getPosY() <= 0);
-					for (auto& object : stack) {
-						flag = (flag ? true : !(object->isCutRight()));
-					}
-					stack.clear();
-
-					if (!flag) {
-						stackX=player->getPosX();
-						stackY=player->getPosY() - 1;
-						player->moveTo(stackX, stackY);
-						findObjectsAt(&stack, player->getPosX(), player->getPosY());
-						for (auto& object : stack) {
-							if (!(object->isCutLeft())) {
-								stackX=player->getPosX();
-								stackY=player->getPosY();
-								object->moveTo(stackX, stackY);
-							}
-						}
-						stack.clear();
-						if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-							std::cout<<"Error to play lightSE"<<std::endl;
-						}
-					} else {
-						if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
-							std::cout<<"Error to play heavySE"<<std::endl;
-						}
-					}
+					moveLeft();
 					break;
 				case SDLK_RIGHT:
-					findObjectsAt(&stack, player->getPosX(), player->getPosY() + 1);
-
-					flag = (player->getPosY() >= 4);
-					for (auto& object : stack) {
-						flag = (flag ? true : !(object->isCutLeft()));
-						if (player->holdedMedCase != nullptr) {
-							flag = object->getSize() == 0;
-						} else if (player->holdedLarCase != nullptr) {
-							flag = object->getSize() <= 1;
-						}
-					}
-					stack.clear();
-
-					if (!flag) {
-						stackX=player->getPosX();
-						stackY=player->getPosY() + 1;
-						player->moveTo(stackX, stackY);
-						if (player->holdedLarCase != nullptr) {
-							if (player->holdedLarCase->isCutRight()) {
-
-								if (player->holdedMedCase != nullptr) {
-									if (!(player->holdedMedCase->isCutRight())) {
-										// if LargeCase is cut right and MediumCase is not cut right
-										player->holdedMedCase->moveTo(stackX, stackY);
-									} else {
-										// if LargeCase is cut right and MediumCase is cut right
-									}
-								} else {
-									// if held only LargeCase
-								}
-
-							} else {
-								if (player->holdedMedCase != nullptr) {
-									// if LargeCase is not cut right and MediumCase is not cut right
-									player->holdedMedCase->moveTo(stackX, stackY);
-									player->holdedLarCase->moveTo(stackX, stackY);
-								}
-							}
-						} else {
-							if (player->holdedMedCase != nullptr) {
-								// if held only MediumCase
-								if (!(player->holdedMedCase->isCutRight())) {
-									// if MediumCase is not cut right
-									player->holdedMedCase->moveTo(stackX, stackY);
-								} else {
-									// if MediumCase is cut right
-								}
-							}
-						}
-						findObjectsAt(&stack, player->getPosX(), player->getPosY());
-						for (auto& object : stack) {
-							if (object->getSize() == 1) {
-								player->holdedMedCase = object;
-							}
-							if (object->getSize() == 2) {
-								player->holdedLarCase = object;
-							}
-						}
-						stack.clear();
-						if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-							std::cout<<"Error to play lightSE"<<std::endl;
-						}
-					} else {
-						if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
-							std::cout<<"Error to play heavySE"<<std::endl;
-						}
-					}
+					moveRight();
 					break;
         }
       }
@@ -284,4 +130,236 @@ void StageData::mainLoop(SDL_Window *window) {
 	Mix_FreeChunk(heavySE);
 	Mix_FreeChunk(goalSE);
 
+}
+
+void StageData::moveLeft() {
+	findObjectsAt(&stack, player->getPosX(), player->getPosY() - 1);
+
+	flag = (player->getPosY() <= 0);
+	for (auto& object : stack) {
+		flag = (flag ? true : !(object->isCutRight()));
+		if (player->holdedMedCase != nullptr) {
+			flag = object->getSize() == 0;
+		} else if (player->holdedLarCase != nullptr) {
+			flag = object->getSize() <= 1;
+		}
+	}
+	stack.clear();
+
+	if (!flag) {
+		stackX=player->getPosX();
+		stackY=player->getPosY() - 1;
+		player->moveTo(stackX, stackY);
+		if (player->holdedLarCase != nullptr) {
+			if (player->holdedLarCase->isCutLeft()) {
+				if (player->holdedMedCase != nullptr) {
+					if (!(player->holdedMedCase->isCutLeft())) {
+						player->holdedMedCase->moveTo(stackX, stackY);
+					}
+				}
+			} else {
+				if (player->holdedMedCase != nullptr) {
+					player->holdedMedCase->moveTo(stackX, stackY);
+					player->holdedLarCase->moveTo(stackX, stackY);
+				}
+			}
+		} else {
+			if (player->holdedMedCase != nullptr) {
+				if (!(player->holdedMedCase->isCutLeft())) {
+					player->holdedMedCase->moveTo(stackX, stackY);
+				}
+			}
+		}
+		findObjectsAt(&stack, player->getPosX(), player->getPosY());
+		for (auto& object : stack) {
+			if (object->getSize() == 1) {
+				player->holdedMedCase = object;
+			}
+			if (object->getSize() == 2) {
+				player->holdedLarCase = object;
+			}
+		}
+		stack.clear();
+		if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+			std::cout<<"Error to play lightSE"<<std::endl;
+		}
+	} else {
+		if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
+			std::cout<<"Error to play heavySE"<<std::endl;
+		}
+	}
+}
+
+void StageData::moveDown() {
+	findObjectsAt(&stack, player->getPosX() + 1, player->getPosY());
+
+	flag = (player->getPosY() >= 4);
+	for (auto& object : stack) {
+		flag = (flag ? true : !(object->isCutUp()));
+		if (player->holdedMedCase != nullptr) {
+			flag = object->getSize() == 0;
+		} else if (player->holdedLarCase != nullptr) {
+			flag = object->getSize() <= 1;
+		}
+	}
+	stack.clear();
+
+	if (!flag) {
+		stackX=player->getPosX() + 1;
+		stackY=player->getPosY();
+		player->moveTo(stackX, stackY);
+		if (player->holdedLarCase != nullptr) {
+			if (player->holdedLarCase->isCutDown()) {
+				if (player->holdedMedCase != nullptr) {
+					if (!(player->holdedMedCase->isCutDown())) {
+						player->holdedMedCase->moveTo(stackX, stackY);
+					}
+				}
+			} else {
+				if (player->holdedMedCase != nullptr) {
+					player->holdedMedCase->moveTo(stackX, stackY);
+					player->holdedLarCase->moveTo(stackX, stackY);
+				}
+			}
+		} else {
+			if (player->holdedMedCase != nullptr) {
+				if (!(player->holdedMedCase->isCutDown())) {
+					player->holdedMedCase->moveTo(stackX, stackY);
+				}
+			}
+		}
+		findObjectsAt(&stack, player->getPosX(), player->getPosY());
+		for (auto& object : stack) {
+			if (object->getSize() == 1) {
+				player->holdedMedCase = object;
+			}
+			if (object->getSize() == 2) {
+				player->holdedLarCase = object;
+			}
+		}
+		stack.clear();
+		if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+			std::cout<<"Error to play lightSE"<<std::endl;
+		}
+	} else {
+		if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
+			std::cout<<"Error to play heavySE"<<std::endl;
+		}
+	}
+}
+
+void StageData::moveRight() {
+	findObjectsAt(&stack, player->getPosX(), player->getPosY() + 1);
+
+	flag = (player->getPosY() >= 4);
+	for (auto& object : stack) {
+		flag = (flag ? true : !(object->isCutLeft()));
+		if (player->holdedMedCase != nullptr) {
+			flag = object->getSize() == 0;
+		} else if (player->holdedLarCase != nullptr) {
+			flag = object->getSize() <= 1;
+		}
+	}
+	stack.clear();
+
+	if (!flag) {
+		stackX=player->getPosX();
+		stackY=player->getPosY() + 1;
+		player->moveTo(stackX, stackY);
+		if (player->holdedLarCase != nullptr) {
+			if (player->holdedLarCase->isCutRight()) {
+				if (player->holdedMedCase != nullptr) {
+					if (!(player->holdedMedCase->isCutRight())) {
+						player->holdedMedCase->moveTo(stackX, stackY);
+					}
+				}
+			} else {
+				if (player->holdedMedCase != nullptr) {
+					player->holdedMedCase->moveTo(stackX, stackY);
+					player->holdedLarCase->moveTo(stackX, stackY);
+				}
+			}
+		} else {
+			if (player->holdedMedCase != nullptr) {
+				if (!(player->holdedMedCase->isCutRight())) {
+					player->holdedMedCase->moveTo(stackX, stackY);
+				}
+			}
+		}
+		findObjectsAt(&stack, player->getPosX(), player->getPosY());
+		for (auto& object : stack) {
+			if (object->getSize() == 1) {
+				player->holdedMedCase = object;
+			}
+			if (object->getSize() == 2) {
+				player->holdedLarCase = object;
+			}
+		}
+		stack.clear();
+		if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+			std::cout<<"Error to play lightSE"<<std::endl;
+		}
+	} else {
+		if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
+			std::cout<<"Error to play heavySE"<<std::endl;
+		}
+	}
+}
+
+void StageData::moveUp() {
+	findObjectsAt(&stack, player->getPosX() - 1, player->getPosY());
+
+	flag = (player->getPosX() <= 0);
+	for (auto& object : stack) {
+		flag = (flag ? true : !(object->isCutDown()));
+		if (player->holdedMedCase != nullptr) {
+			flag = object->getSize() == 0;
+		} else if (player->holdedLarCase != nullptr) {
+			flag = object->getSize() <= 1;
+		}
+	}
+	stack.clear();
+
+	if (!flag) {
+		stackX=player->getPosX() - 1;
+		stackY=player->getPosY();
+		player->moveTo(stackX, stackY);
+		if (player->holdedLarCase != nullptr) {
+			if (player->holdedLarCase->isCutUp()) {
+				if (player->holdedMedCase != nullptr) {
+					if (!(player->holdedMedCase->isCutUp())) {
+						player->holdedMedCase->moveTo(stackX, stackY);
+					}
+				}
+			} else {
+				if (player->holdedMedCase != nullptr) {
+					player->holdedMedCase->moveTo(stackX, stackY);
+					player->holdedLarCase->moveTo(stackX, stackY);
+				}
+			}
+		} else {
+			if (player->holdedMedCase != nullptr) {
+				if (!(player->holdedMedCase->isCutUp())) {
+					player->holdedMedCase->moveTo(stackX, stackY);
+				}
+			}
+		}
+		findObjectsAt(&stack, player->getPosX(), player->getPosY());
+		for (auto& object : stack) {
+			if (object->getSize() == 1) {
+				player->holdedMedCase = object;
+			}
+			if (object->getSize() == 2) {
+				player->holdedLarCase = object;
+			}
+		}
+		stack.clear();
+		if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+			std::cout<<"Error to play lightSE"<<std::endl;
+		}
+	} else {
+		if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
+			std::cout<<"Error to play heavySE"<<std::endl;
+		}
+	}
 }
