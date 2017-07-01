@@ -74,10 +74,11 @@ int main() {
     2, 1, 1, 4, 3,
     1, 5, 1, 0, 0,
     0, 0, 0, 0, 0,
-  })
+  });
   // Start the game
   stage1.mainLoop(window);
   stage2.mainLoop(window);
+  stage3.mainLoop(window);
 
   std::cout<< "Exiting..."<<std::endl;
 

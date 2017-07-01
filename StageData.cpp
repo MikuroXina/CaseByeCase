@@ -17,8 +17,7 @@ StageData::StageData(std::vector<int>&& tileMap) {
 			objects.push_back(newWall);
 			std::cout << "Made a wall at " << i << std::endl;
 		} else if (tileMap[i] == 2 && !isPlayerMade) {
-			int x = i / 5;
-			int y = i % 5;
+			int x = i / 5, y = i % 5;
 			player= new PlayerObject;
 			player->moveTo(x, y);
 
@@ -30,15 +29,21 @@ StageData::StageData(std::vector<int>&& tileMap) {
 			std::cout << "The goal at ("<<goalPosX<<","<<goalPosY<<")"<< std::endl;
 		} else if (tileMap[i] == 4) {
 			isDoorLocked = true;
+			int x = i / 5, y = i % 5;
 			auto newLockedDoor = new LockedDoor(&isDoorLocked);
+			newLockedDoor->moveTo(x, y);
 			objects.push_back(newLockedDoor);
 		} else if (tileMap[i] >= 5 && tileMap[i] <= 8) {
 			auto direction = i - 5;
+			int x = i / 5, y = i % 5;
 			auto newMediumCase = new MediumCase(direction);
+			newMediumCase->moveTo(x, y);
 			objects.push_back(newMediumCase);
 		} else if (tileMap[i] >= 9 && tileMap[i] <= 12) {
 			auto direction = i - 9;
+			int x = i / 5, y = i % 5;
 			auto newLargeCase = new LargeCase(direction);
+			newLargeCase->moveTo(x, y);
 			objects.push_back(newLargeCase);
 		}
 	}
@@ -72,7 +77,7 @@ void StageData::mainLoop(SDL_Window *window) {
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
 	SDL_Event event;
-  bool quit=false, flag=false;
+  bool quit=false;
   while (!quit) {
 		// If on the goal
 		if (player->getPosX() == goalPosX && player->getPosY() == goalPosY) {
@@ -174,10 +179,10 @@ void StageData::moveLeft() {
 		findObjectsAt(&stack, player->getPosX(), player->getPosY());
 		for (auto& object : stack) {
 			if (object->getSize() == 1) {
-				player->holdedMedCase = object;
+				player->holdedMedCase = dynamic_cast<MediumCase*>(object);
 			}
 			if (object->getSize() == 2) {
-				player->holdedLarCase = object;
+				player->holdedLarCase = dynamic_cast<LargeCase*>(object);
 			}
 		}
 		stack.clear();
@@ -232,10 +237,10 @@ void StageData::moveDown() {
 		findObjectsAt(&stack, player->getPosX(), player->getPosY());
 		for (auto& object : stack) {
 			if (object->getSize() == 1) {
-				player->holdedMedCase = object;
+				player->holdedMedCase = dynamic_cast<MediumCase*>(object);
 			}
 			if (object->getSize() == 2) {
-				player->holdedLarCase = object;
+				player->holdedLarCase = dynamic_cast<LargeCase*>(object);
 			}
 		}
 		stack.clear();
@@ -290,10 +295,10 @@ void StageData::moveRight() {
 		findObjectsAt(&stack, player->getPosX(), player->getPosY());
 		for (auto& object : stack) {
 			if (object->getSize() == 1) {
-				player->holdedMedCase = object;
+				player->holdedMedCase = dynamic_cast<MediumCase*>(object);
 			}
 			if (object->getSize() == 2) {
-				player->holdedLarCase = object;
+				player->holdedLarCase = dynamic_cast<LargeCase*>(object);
 			}
 		}
 		stack.clear();
@@ -348,10 +353,10 @@ void StageData::moveUp() {
 		findObjectsAt(&stack, player->getPosX(), player->getPosY());
 		for (auto& object : stack) {
 			if (object->getSize() == 1) {
-				player->holdedMedCase = object;
+				player->holdedMedCase = dynamic_cast<MediumCase*>(object);
 			}
 			if (object->getSize() == 2) {
-				player->holdedLarCase = object;
+				player->holdedLarCase = dynamic_cast<LargeCase*>(object);
 			}
 		}
 		stack.clear();

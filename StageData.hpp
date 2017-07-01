@@ -19,6 +19,7 @@ private:
 	std::vector<ObjectBase*> stack;
 	Mix_Chunk *lightSE, *heavySE, *goalSE;
 	int stackX=0, stackY=0;
+	bool flag=false;
 
 	void findObjectsAt(std::vector<ObjectBase*>*, int, int);
 	void moveLeft();
