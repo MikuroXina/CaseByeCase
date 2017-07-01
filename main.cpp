@@ -31,7 +31,7 @@ int main() {
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-  Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 1, 1024);
+  Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 1, 2048);
 
   constexpr Uint32 width = 500;
   constexpr Uint32 height = 500;
@@ -49,14 +49,23 @@ int main() {
   glViewport(0, 0, width, height);
 
   // Setup the game
-  StageData stage1({ 0, 0, 0, 0, 0,
-                     0, 0, 0, 0, 0,
-                     2, 1, 1, 1, 3,
-                     0, 0, 0, 0, 0,
-                     0, 0, 0, 0, 0,});
+  StageData stage1({
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    2, 1, 1, 1, 3,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,});
 
+  StageData stage2({
+    2, 0, 0, 0, 0,
+    1, 1, 0, 0, 0,
+    0, 1, 1, 0, 0,
+    0, 0, 1, 1, 0,
+    0, 0, 0, 1, 3,
+  });
   // Start the game
   stage1.mainLoop(window);
+  stage2.mainLoop(window);
 
   std::cout<< "Exiting..."<<std::endl;
 

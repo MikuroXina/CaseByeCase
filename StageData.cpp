@@ -59,10 +59,11 @@ void StageData::findObjectsAt(std::vector<ObjectBase*> *stack, int x, int y) {
 
 void StageData::mainLoop(SDL_Window *window) {
 	// Audio setup
-	Mix_Chunk *lightSE, *heavySE;
+	Mix_Chunk *lightSE, *heavySE, *goalSE;
 
 	lightSE = Mix_LoadWAV("lightSE.wav");
 	heavySE = Mix_LoadWAV("heavySE.wav");
+	goalSE = Mix_LoadWAV("goalSE.wav");
 
 	std::vector<ObjectBase*> stack;
 
@@ -70,6 +71,15 @@ void StageData::mainLoop(SDL_Window *window) {
 	int stackX=0, stackY=0;
   bool quit=false, flag=false;
   while (!quit) {
+		// If on the goal
+		if (player->getPosX() == goalPosX && player->getPosY() == goalPosY) {
+			if (Mix_PlayChannel(-1, goalSE, 0) == -1) {
+				std::cout<<"Error to play goalSE"<<std::endl;
+			}
+			SDL_Delay(3000);
+			quit = true;
+		}
+
     // Events
     while (SDL_PollEvent(&event) != 0) {
       if (event.type == SDL_KEYDOWN) {
@@ -205,6 +215,8 @@ void StageData::mainLoop(SDL_Window *window) {
         }
       }
     }
+		
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
     // Render
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -223,5 +235,6 @@ void StageData::mainLoop(SDL_Window *window) {
 	// Audio desturction
 	Mix_FreeChunk(lightSE);
 	Mix_FreeChunk(heavySE);
+	Mix_FreeChunk(goalSE);
 
 }
