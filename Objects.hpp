@@ -26,6 +26,8 @@ public:
 	class MediumCase *holdedMedCase = nullptr;
 	class LargeCase *holdedLarCase = nullptr;
 
+	virtual ~PlayerObject() = default;
+
 	virtual bool isCutUp();
 	virtual bool isCutDown();
 	virtual bool isCutLeft();
@@ -39,6 +41,7 @@ private:
 	int direction;// 0.Left, 1.Down, 2.Right, 3.Up
 public:
 	MediumCase(int&);// Direction
+	virtual ~MediumCase() = default;
 
 	virtual bool isCutUp();
 	virtual bool isCutDown();
@@ -53,6 +56,7 @@ private:
 	int direction;//0.Left, 1.Down, 2.Right, 3.Up
 public:
 	LargeCase(int&); // Direction
+	virtual ~LargeCase() = default;
 
 	virtual bool isCutUp();
 	virtual bool isCutDown();
@@ -64,6 +68,8 @@ public:
 
 class Wall : public ObjectBase {
 public:
+	virtual ~Wall() = default;
+
 	virtual bool isCutUp();
 	virtual bool isCutDown();
 	virtual bool isCutLeft();
@@ -77,6 +83,7 @@ private:
 	bool const *pFlag;
 public:
 	LockedDoor(bool const*);
+	virtual ~LockedDoor() = default;
 
 	virtual bool isCutUp();
 	virtual bool isCutDown();

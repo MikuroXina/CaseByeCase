@@ -7,7 +7,20 @@
 #include "StageData.hpp"
 #include "Objects.hpp"
 
-StageData::StageData(std::vector<int>&& tileMap) {
+StageData::StageData(std::vector<int>&& tile) {
+	tileMap = tile;
+}
+
+void StageData::findObjectsAt(std::vector<ObjectBase*> *stack, int x, int y) {
+	for (auto& object : objects) {
+		if (object->getPosX() == x && object->getPosY() == y) {
+			stack->push_back(object);
+		}
+	}
+}
+
+bool StageData::mainLoop(SDL_Window *window) {
+	// TileMap setup
 	bool isPlayerMade = false;
 	for(int i=0; i<static_cast<int>(tileMap.size()); i+=1) {
 		if (tileMap[i] == 0) {
@@ -54,24 +67,7 @@ StageData::StageData(std::vector<int>&& tileMap) {
 	if (!isPlayerMade) {
 		std::cout<<"Error! The player creating has failed!"<<std::endl;
 	}
-}
 
-StageData::~StageData() {
-	delete player;
-	for(auto& object : objects) {
-		delete object;
-	}
-}
-
-void StageData::findObjectsAt(std::vector<ObjectBase*> *stack, int x, int y) {
-	for (auto& object : objects) {
-		if (object->getPosX() == x && object->getPosY() == y) {
-			stack->push_back(object);
-		}
-	}
-}
-
-void StageData::mainLoop(SDL_Window *window) {
 	// Audio setup
 	lightSE = Mix_LoadWAV("lightSE.wav");
 	heavySE = Mix_LoadWAV("heavySE.wav");
@@ -80,7 +76,7 @@ void StageData::mainLoop(SDL_Window *window) {
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
 	SDL_Event event;
-  bool quit=false;
+  bool quit=false, reset=false;
   while (!quit) {
 		// If on the goal
 		if (player->getPosX() == goalPosX && player->getPosY() == goalPosY) {
@@ -104,6 +100,11 @@ void StageData::mainLoop(SDL_Window *window) {
         case SDLK_ESCAPE:
           std::cout<<"Pressed ESC key!"<<std::endl;
           quit=true;
+					break;
+				case SDLK_r:
+					std::cout<<"Resetting..."<<std::endl;
+					reset=true;
+					quit=true;
 					break;
 				case SDLK_DOWN:
 					moveDown();
@@ -140,6 +141,13 @@ void StageData::mainLoop(SDL_Window *window) {
 	Mix_FreeChunk(heavySE);
 	Mix_FreeChunk(goalSE);
 
+	delete player;
+	for(auto& object : objects) {
+		delete object;
+	}
+	objects.clear();
+
+	return reset;
 }
 
 void StageData::moveLeft() {
@@ -173,9 +181,9 @@ void StageData::moveLeft() {
 					player->holdedLarCase = nullptr;
 				}
 			} else {
+				player->holdedLarCase->moveTo(stackX, stackY);
 				if (player->holdedMedCase != nullptr) {
 					player->holdedMedCase->moveTo(stackX, stackY);
-					player->holdedLarCase->moveTo(stackX, stackY);
 				}
 			}
 		} else {
@@ -210,7 +218,7 @@ void StageData::moveLeft() {
 void StageData::moveDown() {
 	findObjectsAt(&stack, player->getPosX() + 1, player->getPosY());
 
-	flag = (player->getPosY() >= 4);
+	flag = (player->getPosX() >= 4);
 	for (auto& object : stack) {
 		flag = (flag ? true : !(object->isCutUp()));
 		if (player->holdedMedCase != nullptr) {
@@ -238,9 +246,9 @@ void StageData::moveDown() {
 					player->holdedLarCase = nullptr;
 				}
 			} else {
+				player->holdedLarCase->moveTo(stackX, stackY);
 				if (player->holdedMedCase != nullptr) {
 					player->holdedMedCase->moveTo(stackX, stackY);
-					player->holdedLarCase->moveTo(stackX, stackY);
 				}
 			}
 		} else {
@@ -303,9 +311,9 @@ void StageData::moveRight() {
 					player->holdedLarCase = nullptr;
 				}
 			} else {
+				player->holdedLarCase->moveTo(stackX, stackY);
 				if (player->holdedMedCase != nullptr) {
 					player->holdedMedCase->moveTo(stackX, stackY);
-					player->holdedLarCase->moveTo(stackX, stackY);
 				}
 			}
 		} else {
@@ -368,9 +376,9 @@ void StageData::moveUp() {
 					player->holdedLarCase = nullptr;
 				}
 			} else {
+				player->holdedLarCase->moveTo(stackX, stackY);
 				if (player->holdedMedCase != nullptr) {
 					player->holdedMedCase->moveTo(stackX, stackY);
-					player->holdedLarCase->moveTo(stackX, stackY);
 				}
 			}
 		} else {

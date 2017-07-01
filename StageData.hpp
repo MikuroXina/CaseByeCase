@@ -12,6 +12,7 @@ private:
 	// 5x5, 0.Wall, 1.Space, 2.Start, 3.Goal, 4.Locked Door
 	// 5~8.Medium Case(Left, Down, Right, Up), 9~12.Large Case(Left, Down, Right, Up)
 	class PlayerObject *player;
+	std::vector<int> tileMap;
 	std::vector<ObjectBase*> objects;
 	bool isDoorLocked = true;
 	int goalPosX, goalPosY;
@@ -28,8 +29,7 @@ private:
 	void moveUp();
 public:
 	StageData(std::vector<int>&&);
-	~StageData();
-	void mainLoop(SDL_Window*);
+	bool mainLoop(SDL_Window*);
 };
 
 #endif /* end of include guard: STAGEDATA_HPP */
