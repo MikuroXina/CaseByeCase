@@ -17,6 +17,8 @@ private:
 	bool isDoorLocked = true;
 	int goalPosX, goalPosY;
 	SDL_Renderer *renderer;
+
+	void findObjectsAt(std::vector<ObjectBase*>*, int, int);
 public:
 	StageData(std::vector<int>&&);
 	~StageData();

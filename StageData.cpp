@@ -1,5 +1,6 @@
 #include <OpenGL/gl.h>
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <iostream>
 #include <algorithm>
 
@@ -8,7 +9,7 @@
 
 StageData::StageData(std::vector<int>&& tileMap) {
 	bool isPlayerMade = false;
-	for(int i=0; i<tileMap.size(); i+=1) {
+	for(int i=0; i<static_cast<int>(tileMap.size()); i+=1) {
 		if (tileMap[i] == 0) {
 			auto newWall = new Wall;
 			int x = i / 5, y = i % 5;
@@ -48,9 +49,26 @@ StageData::~StageData() {
 	}
 }
 
+void StageData::findObjectsAt(std::vector<ObjectBase*> *stack, int x, int y) {
+	for (auto& object : objects) {
+		if (object->getPosX() == x && object->getPosY() == y) {
+			stack->push_back(object);
+		}
+	}
+}
+
 void StageData::mainLoop(SDL_Window *window) {
+	// Audio setup
+	Mix_Chunk *lightSE, *heavySE;
+
+	lightSE = Mix_LoadWAV("lightSE.wav");
+	heavySE = Mix_LoadWAV("heavySE.wav");
+
+	std::vector<ObjectBase*> stack;
+
 	SDL_Event event;
-  bool quit=false;
+	int stackX=0, stackY=0;
+  bool quit=false, flag=false;
   while (!quit) {
     // Events
     while (SDL_PollEvent(&event) != 0) {
@@ -61,16 +79,72 @@ void StageData::mainLoop(SDL_Window *window) {
           quit=true;
 					break;
 				case SDLK_DOWN:
+					if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+						std::cout<<"Error to play lightSE"<<std::endl;
+					}
 
 					break;
 				case SDLK_UP:
+					if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+						std::cout<<"Error to play lightSE"<<std::endl;
+					}
 
 					break;
 				case SDLK_LEFT:
+					if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+						std::cout<<"Error to play lightSE"<<std::endl;
+					}
 
+					findObjectsAt(&stack, player->getPosX(), player->getPosY() - 1);
+
+					flag = false;
+					for (auto& object : stack) {
+						flag = (flag ? true : object->isCutRight());
+					}
+					stack.clear();
+
+					if (!flag) {
+						stackX=player->getPosX();
+						stackY=player->getPosY() - 1;
+						player->moveTo(stackX, stackY);
+						findObjectsAt(&stack, player->getPosX(), player->getPosY());
+						for (auto& object : stack) {
+							if (!(object->isCutLeft())) {
+								stackX=player->getPosX();
+								stackY=player->getPosY();
+								object->moveTo(stackX, stackY);
+							}
+						}
+						stack.clear();
+					}
 					break;
 				case SDLK_RIGHT:
+					if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
+						std::cout<<"Error to play lightSE"<<std::endl;
+					}
 
+					findObjectsAt(&stack, player->getPosX(), player->getPosY() + 1);
+
+					flag = false;
+					for (auto& object : stack) {
+						flag = (flag ? true : object->isCutLeft());
+					}
+					stack.clear();
+
+					if (!flag) {
+						stackX=player->getPosX();
+						stackY=player->getPosY() + 1;
+						player->moveTo(stackX, stackY);
+						findObjectsAt(&stack, player->getPosX(), player->getPosY());
+						for (auto& object : stack) {
+							if (!(object->isCutRight())) {
+								stackX=player->getPosX();
+								stackY=player->getPosY();
+								object->moveTo(stackX, stackY);
+							}
+						}
+						stack.clear();
+					}
 					break;
         }
       }
@@ -91,4 +165,9 @@ void StageData::mainLoop(SDL_Window *window) {
 
     SDL_Delay(1);
   }
+
+	// Audio desturction
+	Mix_FreeChunk(lightSE);
+	Mix_FreeChunk(heavySE);
+
 }

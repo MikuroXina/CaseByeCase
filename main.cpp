@@ -1,5 +1,6 @@
 #include <OpenGL/gl.h>
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <iostream>
 #include <vector>
 
@@ -13,7 +14,7 @@ void checkError() {
 	}
 }
 
-int main(int argc, const char **argv) {
+int main() {
   std::cout<<"Readying to lunch..."<<std::endl;
 
   SDL_Window* window{};
@@ -29,6 +30,8 @@ int main(int argc, const char **argv) {
 
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+  Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 1, 1024);
 
   constexpr Uint32 width = 500;
   constexpr Uint32 height = 500;
@@ -57,6 +60,7 @@ int main(int argc, const char **argv) {
 
   std::cout<< "Exiting..."<<std::endl;
 
+  Mix_CloseAudio();
   SDL_GL_DeleteContext(context);
   SDL_DestroyWindow(window);
   SDL_Quit();
