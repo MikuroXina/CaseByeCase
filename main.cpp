@@ -49,12 +49,16 @@ int main() {
   glViewport(0, 0, width, height);
 
   // Setup the game
+  // TileMap's format:
+	// 5x5, 0.Wall, 1.Space, 2.Start, 3.Goal, 4.Locked Door
+	// 5~8.Medium Case(Left, Down, Right, Up), 9~12.Large Case(Left, Down, Right, Up)
   StageData stage1({
     0, 0, 0, 0, 0,
     0, 0, 0, 0, 0,
     2, 1, 1, 1, 3,
     0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0,});
+    0, 0, 0, 0, 0,
+  });
 
   StageData stage2({
     2, 0, 0, 0, 0,
@@ -63,6 +67,14 @@ int main() {
     0, 0, 1, 1, 0,
     0, 0, 0, 1, 3,
   });
+
+  StageData stage3({
+    0, 0, 0, 0, 0,
+    1, 1, 9, 0, 0,
+    2, 1, 1, 4, 3,
+    1, 5, 1, 0, 0,
+    0, 0, 0, 0, 0,
+  })
   // Start the game
   stage1.mainLoop(window);
   stage2.mainLoop(window);

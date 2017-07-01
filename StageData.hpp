@@ -11,7 +11,7 @@ private:
 	// TileMap's format:
 	// 5x5, 0.Wall, 1.Space, 2.Start, 3.Goal, 4.Locked Door
 	// 5~8.Medium Case(Left, Down, Right, Up), 9~12.Large Case(Left, Down, Right, Up)
-	ObjectBase *player;
+	class PlayerObject *player;
 	std::vector<ObjectBase*> objects;
 	bool isDoorLocked = true;
 	int goalPosX, goalPosY;

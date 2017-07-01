@@ -88,6 +88,9 @@ void StageData::mainLoop(SDL_Window *window) {
 			quit = true;
 		}
 
+		// If unlocked the key
+		// TODO
+
     // Events
     while (SDL_PollEvent(&event) != 0) {
       if (event.type == SDL_KEYDOWN) {
@@ -195,6 +198,11 @@ void StageData::mainLoop(SDL_Window *window) {
 					flag = (player->getPosY() >= 4);
 					for (auto& object : stack) {
 						flag = (flag ? true : !(object->isCutLeft()));
+						if (player->holdedMedCase != nullptr) {
+							flag = object->getSize() == 0;
+						} else if (player->holdedLarCase != nullptr) {
+							flag = object->getSize() <= 1;
+						}
 					}
 					stack.clear();
 
@@ -202,12 +210,45 @@ void StageData::mainLoop(SDL_Window *window) {
 						stackX=player->getPosX();
 						stackY=player->getPosY() + 1;
 						player->moveTo(stackX, stackY);
+						if (player->holdedLarCase != nullptr) {
+							if (player->holdedLarCase->isCutRight()) {
+
+								if (player->holdedMedCase != nullptr) {
+									if (!(player->holdedMedCase->isCutRight())) {
+										// if LargeCase is cut right and MediumCase is not cut right
+										player->holdedMedCase->moveTo(stackX, stackY);
+									} else {
+										// if LargeCase is cut right and MediumCase is cut right
+									}
+								} else {
+									// if held only LargeCase
+								}
+
+							} else {
+								if (player->holdedMedCase != nullptr) {
+									// if LargeCase is not cut right and MediumCase is not cut right
+									player->holdedMedCase->moveTo(stackX, stackY);
+									player->holdedLarCase->moveTo(stackX, stackY);
+								}
+							}
+						} else {
+							if (player->holdedMedCase != nullptr) {
+								// if held only MediumCase
+								if (!(player->holdedMedCase->isCutRight())) {
+									// if MediumCase is not cut right
+									player->holdedMedCase->moveTo(stackX, stackY);
+								} else {
+									// if MediumCase is cut right
+								}
+							}
+						}
 						findObjectsAt(&stack, player->getPosX(), player->getPosY());
 						for (auto& object : stack) {
-							if (!(object->isCutRight())) {
-								stackX=player->getPosX();
-								stackY=player->getPosY();
-								object->moveTo(stackX, stackY);
+							if (object->getSize() == 1) {
+								player->holdedMedCase = object;
+							}
+							if (object->getSize() == 2) {
+								player->holdedLarCase = object;
 							}
 						}
 						stack.clear();

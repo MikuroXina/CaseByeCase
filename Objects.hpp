@@ -3,7 +3,7 @@
 
 class ObjectBase {
 protected:
-	int posX=0, posY=0;
+	int posX=0, posY=0, size=0;
 public:
 	ObjectBase() = default;
 	virtual ~ObjectBase() = default;
@@ -17,11 +17,15 @@ public:
 
 	int getPosX() const;
 	int getPosY() const;
+	int getSize() const;
 	virtual void moveTo(int&, int&);// move to (x, y)
 };
 
 class PlayerObject : public ObjectBase {
 public:
+	class MediumCase *holdedMedCase = nullptr;
+	class LargeCase *holdedLarCase = nullptr;
+
 	virtual bool isCutUp();
 	virtual bool isCutDown();
 	virtual bool isCutLeft();

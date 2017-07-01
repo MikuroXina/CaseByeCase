@@ -10,6 +10,9 @@ int ObjectBase::getPosX() const {
 int ObjectBase::getPosY() const {
 	return posY;
 }
+int ObjectBase::getSize() const {
+	return size;
+}
 
 void ObjectBase::moveTo(int& x, int& y) {
 	posX = x;
@@ -29,7 +32,7 @@ void PlayerObject::render() {
 
 // MediumCase member functions
 MediumCase::MediumCase(int& dir) : direction(dir) {
-	;
+	size = 1;
 }
 
 bool MediumCase::isCutUp() { return direction == 3; }
@@ -38,12 +41,33 @@ bool MediumCase::isCutLeft() { return direction == 0; }
 bool MediumCase::isCutRight() { return direction == 2; }
 
 void MediumCase::render() {
-	;
+	glBegin(GL_LINES);
+
+	if (direction != 0) {
+		glVertex2i(posY*100+20, posX*100+20);
+		glVertex2i(posY*100+20, (posX+1)*100-20);
+	}
+
+	if (direction != 1) {
+		glVertex2i(posY*100+20, (posX+1)*100-20);
+		glVertex2i((posY+1)*100-20, (posX+1)*100-20);
+	}
+
+	if (direction != 2) {
+		glVertex2i((posY+1)*100-20, (posX+1)*100-20);
+		glVertex2i((posY+1)*100-20, posX*100+20);
+	}
+
+	if (direction != 3) {
+		glVertex2i((posY+1)*100-20, posX*100+20);
+		glVertex2i(posY*100+20, posX*100+20);
+	}
+	glEnd();
 }
 
 // LargeCase member functions
 LargeCase::LargeCase(int& dir) : direction(dir) {
-	;
+	size = 2;
 }
 
 bool LargeCase::isCutUp() { return direction == 3; }
@@ -53,6 +77,27 @@ bool LargeCase::isCutRight() { return direction == 2; }
 
 void LargeCase::render() {
 	glBegin(GL_LINES);
+
+	if (direction != 0) {
+		glVertex2i(posY*100+10, posX*100+10);
+		glVertex2i(posY*100+10, (posX+1)*100-10);
+	}
+
+	if (direction != 1) {
+		glVertex2i(posY*100+10, (posX+1)*100-10);
+		glVertex2i((posY+1)*100-10, (posX+1)*100-10);
+	}
+
+	if (direction != 2) {
+		glVertex2i((posY+1)*100-10, (posX+1)*100-10);
+		glVertex2i((posY+1)*100-10, posX*100+10);
+	}
+
+	if (direction != 3) {
+		glVertex2i((posY+1)*100-10, posX*100+10);
+		glVertex2i(posY*100+10, posX*100+10);
+	}
+	glEnd();
 }
 
 // Wall member functions
