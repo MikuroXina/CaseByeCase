@@ -101,6 +101,7 @@ void StageData::mainLoop(SDL_Window *window) {
 					for (auto& object : stack) {
 						flag = (flag ? true : object->isCutRight());
 					}
+					flag = (player->getPosY() <= 0);
 					stack.clear();
 
 					if (!flag) {
@@ -129,6 +130,7 @@ void StageData::mainLoop(SDL_Window *window) {
 					for (auto& object : stack) {
 						flag = (flag ? true : object->isCutLeft());
 					}
+					flag = (player->getPosY() >= 4);
 					stack.clear();
 
 					if (!flag) {
