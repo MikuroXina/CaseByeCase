@@ -33,18 +33,21 @@ StageData::StageData(std::vector<int>&& tileMap) {
 			auto newLockedDoor = new LockedDoor(&isDoorLocked);
 			newLockedDoor->moveTo(x, y);
 			objects.push_back(newLockedDoor);
+			std::cout << "Made a locked door at " << i << std::endl;
 		} else if (tileMap[i] >= 5 && tileMap[i] <= 8) {
-			auto direction = i - 5;
+			auto direction = tileMap[i] - 5;
 			int x = i / 5, y = i % 5;
 			auto newMediumCase = new MediumCase(direction);
 			newMediumCase->moveTo(x, y);
 			objects.push_back(newMediumCase);
+			std::cout << "Made a medium case at " << i << ". Dir:" << direction << std::endl;
 		} else if (tileMap[i] >= 9 && tileMap[i] <= 12) {
-			auto direction = i - 9;
+			auto direction = tileMap[i] - 9;
 			int x = i / 5, y = i % 5;
 			auto newLargeCase = new LargeCase(direction);
 			newLargeCase->moveTo(x, y);
 			objects.push_back(newLargeCase);
+			std::cout << "Made a large case at " << i << ". Dir:" << direction << std::endl;
 		}
 	}
 
@@ -81,6 +84,7 @@ void StageData::mainLoop(SDL_Window *window) {
   while (!quit) {
 		// If on the goal
 		if (player->getPosX() == goalPosX && player->getPosY() == goalPosY) {
+			SDL_Delay(500);
 			if (Mix_PlayChannel(-1, goalSE, 0) == -1) {
 				std::cout<<"Error to play goalSE"<<std::endl;
 			}
@@ -145,9 +149,9 @@ void StageData::moveLeft() {
 	for (auto& object : stack) {
 		flag = (flag ? true : !(object->isCutRight()));
 		if (player->holdedMedCase != nullptr) {
-			flag = object->getSize() == 0;
+			flag = (flag ? true : object->getSize() <= 1);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = object->getSize() <= 1;
+			flag = (flag ? true : object->getSize() == 1);
 		}
 	}
 	stack.clear();
@@ -161,7 +165,12 @@ void StageData::moveLeft() {
 				if (player->holdedMedCase != nullptr) {
 					if (!(player->holdedMedCase->isCutLeft())) {
 						player->holdedMedCase->moveTo(stackX, stackY);
+					} else {
+						player->holdedMedCase = nullptr;
+						player->holdedLarCase = nullptr;
 					}
+				} else {
+					player->holdedLarCase = nullptr;
 				}
 			} else {
 				if (player->holdedMedCase != nullptr) {
@@ -173,6 +182,8 @@ void StageData::moveLeft() {
 			if (player->holdedMedCase != nullptr) {
 				if (!(player->holdedMedCase->isCutLeft())) {
 					player->holdedMedCase->moveTo(stackX, stackY);
+				} else {
+					player->holdedMedCase = nullptr;
 				}
 			}
 		}
@@ -203,9 +214,9 @@ void StageData::moveDown() {
 	for (auto& object : stack) {
 		flag = (flag ? true : !(object->isCutUp()));
 		if (player->holdedMedCase != nullptr) {
-			flag = object->getSize() == 0;
+			flag = (flag ? true : object->getSize() <= 1);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = object->getSize() <= 1;
+			flag = (flag ? true : object->getSize() == 1);
 		}
 	}
 	stack.clear();
@@ -219,7 +230,12 @@ void StageData::moveDown() {
 				if (player->holdedMedCase != nullptr) {
 					if (!(player->holdedMedCase->isCutDown())) {
 						player->holdedMedCase->moveTo(stackX, stackY);
+					} else {
+						player->holdedMedCase = nullptr;
+						player->holdedLarCase = nullptr;
 					}
+				} else {
+					player->holdedLarCase = nullptr;
 				}
 			} else {
 				if (player->holdedMedCase != nullptr) {
@@ -231,6 +247,8 @@ void StageData::moveDown() {
 			if (player->holdedMedCase != nullptr) {
 				if (!(player->holdedMedCase->isCutDown())) {
 					player->holdedMedCase->moveTo(stackX, stackY);
+				} else {
+					player->holdedMedCase = nullptr;
 				}
 			}
 		}
@@ -261,9 +279,9 @@ void StageData::moveRight() {
 	for (auto& object : stack) {
 		flag = (flag ? true : !(object->isCutLeft()));
 		if (player->holdedMedCase != nullptr) {
-			flag = object->getSize() == 0;
+			flag = (flag ? true : object->getSize() <= 1);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = object->getSize() <= 1;
+			flag = (flag ? true : object->getSize() == 1);
 		}
 	}
 	stack.clear();
@@ -277,7 +295,12 @@ void StageData::moveRight() {
 				if (player->holdedMedCase != nullptr) {
 					if (!(player->holdedMedCase->isCutRight())) {
 						player->holdedMedCase->moveTo(stackX, stackY);
+					} else {
+						player->holdedMedCase = nullptr;
+						player->holdedLarCase = nullptr;
 					}
+				} else {
+					player->holdedLarCase = nullptr;
 				}
 			} else {
 				if (player->holdedMedCase != nullptr) {
@@ -289,6 +312,8 @@ void StageData::moveRight() {
 			if (player->holdedMedCase != nullptr) {
 				if (!(player->holdedMedCase->isCutRight())) {
 					player->holdedMedCase->moveTo(stackX, stackY);
+				} else {
+					player->holdedMedCase = nullptr;
 				}
 			}
 		}
@@ -319,9 +344,9 @@ void StageData::moveUp() {
 	for (auto& object : stack) {
 		flag = (flag ? true : !(object->isCutDown()));
 		if (player->holdedMedCase != nullptr) {
-			flag = object->getSize() == 0;
+			flag = (flag ? true : object->getSize() <= 1);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = object->getSize() <= 1;
+			flag = (flag ? true : object->getSize() == 1);
 		}
 	}
 	stack.clear();
@@ -335,7 +360,12 @@ void StageData::moveUp() {
 				if (player->holdedMedCase != nullptr) {
 					if (!(player->holdedMedCase->isCutUp())) {
 						player->holdedMedCase->moveTo(stackX, stackY);
+					} else {
+						player->holdedMedCase = nullptr;
+						player->holdedLarCase = nullptr;
 					}
+				} else {
+					player->holdedLarCase = nullptr;
 				}
 			} else {
 				if (player->holdedMedCase != nullptr) {
@@ -347,6 +377,8 @@ void StageData::moveUp() {
 			if (player->holdedMedCase != nullptr) {
 				if (!(player->holdedMedCase->isCutUp())) {
 					player->holdedMedCase->moveTo(stackX, stackY);
+				} else {
+					player->holdedMedCase = nullptr;
 				}
 			}
 		}

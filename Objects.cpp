@@ -41,6 +41,7 @@ bool MediumCase::isCutLeft() { return direction == 0; }
 bool MediumCase::isCutRight() { return direction == 2; }
 
 void MediumCase::render() {
+	glColor3f(1.0, 0.6, 0);
 	glBegin(GL_LINES);
 
 	if (direction != 0) {
@@ -76,6 +77,7 @@ bool LargeCase::isCutLeft() { return direction == 0; }
 bool LargeCase::isCutRight() { return direction == 2; }
 
 void LargeCase::render() {
+	glColor3f(1.0, 0.6, 0);
 	glBegin(GL_LINES);
 
 	if (direction != 0) {
@@ -131,7 +133,7 @@ void Wall::render() {
 
 // LockedDoor member functions
 LockedDoor::LockedDoor(bool const* flag) : pFlag(flag) {
-	;
+	size = 3;
 }
 
 // It don't have a collision if unlocked the door
@@ -142,7 +144,7 @@ bool LockedDoor::isCutRight() { return !(*pFlag); }
 
 void LockedDoor::render() {
 	if (*pFlag) { // If door locked
-		glColor3f(1.0, 0.6, 0);
+		glColor3f(1.0, 1.0, 0);
 		glBegin(GL_LINES);
 		glVertex2i(posY*100+5, posX*100+5);
 		glVertex2i(posY*100+5, (posX+1)*100-5);
