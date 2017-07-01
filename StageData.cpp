@@ -72,7 +72,6 @@ void StageData::mainLoop(SDL_Window *window) {
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
 	SDL_Event event;
-	int stackX=0, stackY=0;
   bool quit=false, flag=false;
   while (!quit) {
 		// If on the goal
@@ -85,7 +84,9 @@ void StageData::mainLoop(SDL_Window *window) {
 		}
 
 		// If unlocked the key
-		// TODO
+		if (player->holdedMedCase != nullptr && player->holdedLarCase != nullptr) {
+			isDoorLocked = false;
+		}
 
     // Events
     while (SDL_PollEvent(&event) != 0) {

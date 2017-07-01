@@ -18,6 +18,7 @@ private:
 	SDL_Renderer *renderer;
 	std::vector<ObjectBase*> stack;
 	Mix_Chunk *lightSE, *heavySE, *goalSE;
+	int stackX=0, stackY=0;
 
 	void findObjectsAt(std::vector<ObjectBase*>*, int, int);
 	void moveLeft();
