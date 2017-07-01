@@ -83,12 +83,56 @@ void StageData::mainLoop(SDL_Window *window) {
 						std::cout<<"Error to play lightSE"<<std::endl;
 					}
 
+					findObjectsAt(&stack, player->getPosX() + 1, player->getPosY());
+
+					flag = (player->getPosX() >= 4);
+					for (auto& object : stack) {
+						flag = (flag ? true : !(object->isCutUp()));
+					}
+					stack.clear();
+
+					if (!flag) {
+						stackX=player->getPosX() + 1;
+						stackY=player->getPosY();
+						player->moveTo(stackX, stackY);
+						findObjectsAt(&stack, player->getPosX(), player->getPosY());
+						for (auto& object : stack) {
+							if (!(object->isCutDown())) {
+								stackX=player->getPosX();
+								stackY=player->getPosY();
+								object->moveTo(stackX, stackY);
+							}
+						}
+						stack.clear();
+					}
 					break;
 				case SDLK_UP:
 					if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
 						std::cout<<"Error to play lightSE"<<std::endl;
 					}
 
+					findObjectsAt(&stack, player->getPosX() - 1, player->getPosY());
+
+					flag = (player->getPosX() <= 0);
+					for (auto& object : stack) {
+						flag = (flag ? true : !(object->isCutDown()));
+					}
+					stack.clear();
+
+					if (!flag) {
+						stackX=player->getPosX() - 1;
+						stackY=player->getPosY();
+						player->moveTo(stackX, stackY);
+						findObjectsAt(&stack, player->getPosX(), player->getPosY());
+						for (auto& object : stack) {
+							if (!(object->isCutUp())) {
+								stackX=player->getPosX();
+								stackY=player->getPosY();
+								object->moveTo(stackX, stackY);
+							}
+						}
+						stack.clear();
+					}
 					break;
 				case SDLK_LEFT:
 					if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
@@ -97,11 +141,10 @@ void StageData::mainLoop(SDL_Window *window) {
 
 					findObjectsAt(&stack, player->getPosX(), player->getPosY() - 1);
 
-					flag = false;
-					for (auto& object : stack) {
-						flag = (flag ? true : object->isCutRight());
-					}
 					flag = (player->getPosY() <= 0);
+					for (auto& object : stack) {
+						flag = (flag ? true : !(object->isCutRight()));
+					}
 					stack.clear();
 
 					if (!flag) {
@@ -126,11 +169,10 @@ void StageData::mainLoop(SDL_Window *window) {
 
 					findObjectsAt(&stack, player->getPosX(), player->getPosY() + 1);
 
-					flag = false;
-					for (auto& object : stack) {
-						flag = (flag ? true : object->isCutLeft());
-					}
 					flag = (player->getPosY() >= 4);
+					for (auto& object : stack) {
+						flag = (flag ? true : !(object->isCutLeft()));
+					}
 					stack.clear();
 
 					if (!flag) {
