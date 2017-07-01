@@ -52,7 +52,7 @@ bool LargeCase::isCutLeft() { return direction == 0; }
 bool LargeCase::isCutRight() { return direction == 2; }
 
 void LargeCase::render() {
-	;
+	glBegin(GL_LINES);
 }
 
 // Wall member functions
@@ -96,5 +96,20 @@ bool LockedDoor::isCutLeft() { return !(*pFlag); }
 bool LockedDoor::isCutRight() { return !(*pFlag); }
 
 void LockedDoor::render() {
-	;
+	if (*pFlag) { // If door locked
+		glColor3f(1.0, 0.6, 0);
+		glBegin(GL_LINES);
+		glVertex2i(posY*100+5, posX*100+5);
+		glVertex2i(posY*100+5, (posX+1)*100-5);
+
+		glVertex2i(posY*100+5, (posX+1)*100-5);
+		glVertex2i((posY+1)*100-5, (posX+1)*100-5);
+
+		glVertex2i((posY+1)*100-5, (posX+1)*100-5);
+		glVertex2i((posY+1)*100-5, posX*100+5);
+
+		glVertex2i((posY+1)*100-5, posX*100+5);
+		glVertex2i(posY*100+5, posX*100+5);
+		glEnd();
+	}
 }

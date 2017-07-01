@@ -10,8 +10,7 @@ class StageData {
 private:
 	// TileMap's format:
 	// 5x5, 0.Wall, 1.Space, 2.Start, 3.Goal, 4.Locked Door
-	// 4~7.Medium Case(Left, Down, Right, Up), 8~11.Large Case(Left, Down, Right, Up)
-	// Note: Don't set the start at (5,5)
+	// 5~8.Medium Case(Left, Down, Right, Up), 9~12.Large Case(Left, Down, Right, Up)
 	ObjectBase *player;
 	std::vector<ObjectBase*> objects;
 	bool isDoorLocked = true;

@@ -29,11 +29,17 @@ StageData::StageData(std::vector<int>&& tileMap) {
 			goalPosY = i % 5;
 			std::cout << "The goal at ("<<goalPosX<<","<<goalPosY<<")"<< std::endl;
 		} else if (tileMap[i] == 4) {
-
-		} else if (tileMap[i] == 5) {
-
-		} else if (tileMap[i] == 6) {
-
+			isDoorLocked = true;
+			auto newLockedDoor = new LockedDoor(&isDoorLocked);
+			objects.push_back(newLockedDoor);
+		} else if (tileMap[i] >= 5 && tileMap[i] <= 8) {
+			auto direction = i - 5;
+			auto newMediumCase = new MediumCase(direction);
+			objects.push_back(newMediumCase);
+		} else if (tileMap[i] >= 9 && tileMap[i] <= 12) {
+			auto direction = i - 9;
+			auto newLargeCase = new LargeCase(direction);
+			objects.push_back(newLargeCase);
 		}
 	}
 
@@ -66,6 +72,8 @@ void StageData::mainLoop(SDL_Window *window) {
 	goalSE = Mix_LoadWAV("goalSE.wav");
 
 	std::vector<ObjectBase*> stack;
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
 	SDL_Event event;
 	int stackX=0, stackY=0;
@@ -215,8 +223,6 @@ void StageData::mainLoop(SDL_Window *window) {
         }
       }
     }
-		
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
     // Render
     glClearColor(0.0, 0.0, 0.0, 1.0);
