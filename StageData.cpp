@@ -90,8 +90,8 @@ bool StageData::mainLoop(SDL_Window *window) {
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
 	SDL_Event event;
-  bool quit=false, reset=false;
-  while (!quit) {
+	bool quit=false, reset=false;
+	while (!quit) {
 		// If on the goal
 		if (player->getPosX() == goalPosX && player->getPosY() == goalPosY) {
 			SDL_Delay(500);
@@ -109,13 +109,13 @@ bool StageData::mainLoop(SDL_Window *window) {
 			}
 		}
 
-    // Events
-    while (SDL_PollEvent(&event) != 0) {
-      if (event.type == SDL_KEYDOWN) {
-        switch (event.key.keysym.sym) {
-        case SDLK_ESCAPE:
-          std::cout<<"Pressed ESC key!"<<std::endl;
-          quit=true;
+		// Events
+		while (SDL_PollEvent(&event) != 0) {
+			if (event.type == SDL_KEYDOWN) {
+				switch (event.key.keysym.sym) {
+				case SDLK_ESCAPE:
+					std::cout<<"Pressed ESC key!"<<std::endl;
+					quit=true;
 					break;
 				case SDLK_r:
 					std::cout<<"Resetting..."<<std::endl;
@@ -134,23 +134,23 @@ bool StageData::mainLoop(SDL_Window *window) {
 				case SDLK_RIGHT:
 					moveRight();
 					break;
-        }
-      }
-    }
+				}
+			}
+		}
 
-    // Render
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+		// Render
+		glClearColor(0.0, 0.0, 0.0, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT);
 
 		for(auto& object : objects) {
 			object->render();
 		}
 		player->render();
 
-    SDL_GL_SwapWindow(window);
+		SDL_GL_SwapWindow(window);
 
-    SDL_Delay(1);
-  }
+		SDL_Delay(1);
+	}
 
 	// Audio desturction
 	Mix_FreeChunk(lightSE);
