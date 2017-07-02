@@ -169,18 +169,18 @@ bool StageData::mainLoop(SDL_Window *window) {
 void StageData::moveLeft() {
 	findObjectsAt(&stack, player->getPosX(), player->getPosY() - 1);
 
-	flag = (player->getPosY() <= 0);
+	flag = (player->getPosY() > 0);
 	for (auto& object : stack) {
-		flag = (flag ? true : !(object->isCutRight()));
+		flag = (flag ? object->isCutRight() : false);
 		if (player->holdedMedCase != nullptr) {
-			flag = (flag ? true : object->getSize() <= 1);
+			flag = (flag ? object->getSize() > 1 : false);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = (flag ? true : object->getSize() <= 2);
+			flag = (flag ? object->getSize() <= 2 || (object->isCutRight() && player->holdedLarCase->isCutLeft()) : false);
 		}
 	}
 	stack.clear();
 
-	if (!flag) {
+	if (flag) {
 		stackX=player->getPosX();
 		stackY=player->getPosY() - 1;
 		player->moveTo(stackX, stackY);
@@ -234,18 +234,18 @@ void StageData::moveLeft() {
 void StageData::moveDown() {
 	findObjectsAt(&stack, player->getPosX() + 1, player->getPosY());
 
-	flag = (player->getPosX() >= 4);
+	flag = (player->getPosX() < 4);
 	for (auto& object : stack) {
-		flag = (flag ? true : !(object->isCutUp()));
+		flag = (flag ? object->isCutUp() : false);
 		if (player->holdedMedCase != nullptr) {
-			flag = (flag ? true : object->getSize() <= 1);
+			flag = (flag ? object->getSize() > 1 : false);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = (flag ? true : object->getSize() <= 2);
+			flag = (flag ? object->getSize() <= 2 || (object->isCutUp() && player->holdedLarCase->isCutDown()) : false);
 		}
 	}
 	stack.clear();
 
-	if (!flag) {
+	if (flag) {
 		stackX=player->getPosX() + 1;
 		stackY=player->getPosY();
 		player->moveTo(stackX, stackY);
@@ -299,18 +299,18 @@ void StageData::moveDown() {
 void StageData::moveRight() {
 	findObjectsAt(&stack, player->getPosX(), player->getPosY() + 1);
 
-	flag = (player->getPosY() >= 4);
+	flag = (player->getPosY() < 4);
 	for (auto& object : stack) {
-		flag = (flag ? true : !(object->isCutLeft()));
+		flag = (flag ? object->isCutLeft() : false);
 		if (player->holdedMedCase != nullptr) {
-			flag = (flag ? true : object->getSize() <= 1);
+			flag = (flag ? object->getSize() > 1 : false);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = (flag ? true : object->getSize() <= 2);
+			flag = (flag ? object->getSize() <= 2 || (object->isCutLeft() && player->holdedLarCase->isCutRight()) : false);
 		}
 	}
 	stack.clear();
 
-	if (!flag) {
+	if (flag) {
 		stackX=player->getPosX();
 		stackY=player->getPosY() + 1;
 		player->moveTo(stackX, stackY);
@@ -364,18 +364,18 @@ void StageData::moveRight() {
 void StageData::moveUp() {
 	findObjectsAt(&stack, player->getPosX() - 1, player->getPosY());
 
-	flag = (player->getPosX() <= 0);
+	flag = (player->getPosX() > 0);
 	for (auto& object : stack) {
-		flag = (flag ? true : !(object->isCutDown()));
+		flag = (flag ? object->isCutDown() : false);
 		if (player->holdedMedCase != nullptr) {
-			flag = (flag ? true : object->getSize() <= 1);
+			flag = (flag ? object->getSize() > 1 : false);
 		} else if (player->holdedLarCase != nullptr) {
-			flag = (flag ? true : object->getSize() <= 2);
+			flag = (flag ? object->getSize() <= 2 || (object->isCutDown() && player->holdedLarCase->isCutUp()) : false);
 		}
 	}
 	stack.clear();
 
-	if (!flag) {
+	if (flag) {
 		stackX=player->getPosX() - 1;
 		stackY=player->getPosY();
 		player->moveTo(stackX, stackY);
