@@ -31,7 +31,7 @@ int main() {
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 1, 2048);
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 1024);
 
 	constexpr Uint32 width = 500;
 	constexpr Uint32 height = 500;
