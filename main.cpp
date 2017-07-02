@@ -106,6 +106,15 @@ int main() {
 	});
 	while (stage6.mainLoop(window)) {;}
 
+	StageData stage7({
+		0, 0, 0, 0, 0,
+		1, 1, 1,10, 1,
+		1,20, 9, 2,16,
+		0, 4, 0, 0, 0,
+		0, 3, 0, 0, 0,
+	});
+	while (stage7.mainLoop(window)) {;}
+
 	std::cout<< "Exiting..."<<std::endl;
 
 	Mix_CloseAudio();
