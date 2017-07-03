@@ -126,6 +126,15 @@ int main() {
 		});
 		while (stage8.mainLoop(window)) {;}
 
+		StageData stage9({
+			1, 1, 1, 1, 1,
+		 12,10, 0, 1,13,
+			1, 1, 0,10,12,
+			1, 2,17, 1, 0,
+			0,11, 1, 4, 3
+		});
+		while (stage9.mainLoop(window)) {;}
+
 		// Ending
 		StageData ending({
 			2, 1, 1, 1, 1,
