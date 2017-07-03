@@ -120,7 +120,7 @@ int main() {
 		StageData stage8({
 			0, 0, 2, 1, 1,
 			1, 1,11, 1, 1,
-		 20,13, 0,11, 8,
+		 20,13, 0, 8, 9,
 			1, 5, 0, 0, 0,
 			1, 1, 1, 4, 3,
 		});
@@ -134,7 +134,7 @@ int main() {
 			1, 0, 0, 0, 0,
 			1, 1, 1, 1, 3,
 		});
-		quit = !(ending.mainLoop(window));
+		quit = ending.mainLoop(window);
 	} while(!quit);
 
 	std::cout<< "Exiting..."<<std::endl;
