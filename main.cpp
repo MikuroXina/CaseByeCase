@@ -127,13 +127,40 @@ int main() {
 		while (stage8.mainLoop(window)) {;}
 
 		StageData stage9({
-			1, 1, 1, 1, 1,
-		 12,10, 0, 1,13,
-			1, 1, 0,10,12,
-			1, 2,17, 1, 0,
-			0,11, 1, 4, 3
+			1,15, 1, 1,10,
+			14,1, 6,12, 1,
+			1, 7, 2, 0,20,
+			1, 9, 0, 0, 4,
+			11,1,17, 4, 3,
 		});
 		while (stage9.mainLoop(window)) {;}
+
+		StageData stage10({
+			2, 5, 1, 0, 1,
+			0, 1, 1, 1,14,
+			1,18, 0,12, 1,
+			1, 1,11, 1, 0,
+			1, 0, 1, 4, 3,
+		});
+		while (stage10.mainLoop(window)) {;}
+
+		StageData stage11({
+			2, 6, 1, 7, 1,
+			8, 1, 5, 1, 5,
+			1, 8, 0, 8, 0,
+			8, 2, 5, 0, 8,
+			0, 7, 1, 5, 3,
+		});
+		while (stage11.mainLoop(window)) {;}
+
+		StageData stage12({
+			2, 1, 1, 1, 1,
+			11,16,8, 8, 8,
+			0, 0, 0, 0, 1,
+			4, 1, 1, 1, 1,
+			3, 0,20,12, 1,
+		});
+		while (stage12.mainLoop(window)) {;}
 
 		// Ending
 		StageData ending({
