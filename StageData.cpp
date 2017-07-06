@@ -176,11 +176,7 @@ void StageData::moveLeft() {
 	for (auto& object : stack) {
 		flag = (flag ? object->isCutRight() : false);
 		if (player->holdedMedCase != nullptr && player->holdedLarCase != nullptr) {
-<<<<<<< HEAD
 			flag = (flag ? object->getSize() <= 3 || (object->isCutRight() && player->holdedLarCase->isCutLeft()) : false);
-=======
-			flag = (flag ? object->getSize() <= 3 && object->isCutRight() && player->holdedLarCase->isCutLeft() : false);
->>>>>>> 6f20806653305e1fc1a664443e013adc63ab235b
 		} else if (player->holdedMedCase != nullptr) {
 			flag = (flag ? object->getSize() > 1 || (object->isCutRight() && player->holdedMedCase->isCutLeft()) : false);
 		} else if (player->holdedLarCase != nullptr) {
@@ -247,11 +243,7 @@ void StageData::moveDown() {
 	for (auto& object : stack) {
 		flag = (flag ? object->isCutUp() : false);
 		if (player->holdedMedCase != nullptr && player->holdedLarCase != nullptr) {
-<<<<<<< HEAD
 			flag = (flag ? object->getSize() <= 3 || (object->isCutUp() && player->holdedLarCase->isCutDown()) : false);
-=======
-			flag = (flag ? object->getSize() <= 3 && object->isCutUp() && player->holdedLarCase->isCutDown() : false);
->>>>>>> 6f20806653305e1fc1a664443e013adc63ab235b
 		} else if (player->holdedMedCase != nullptr) {
 			flag = (flag ? object->getSize() > 1 || (object->isCutUp() && player->holdedMedCase->isCutDown()) : false);
 		} else if (player->holdedLarCase != nullptr) {
@@ -318,11 +310,7 @@ void StageData::moveRight() {
 	for (auto& object : stack) {
 		flag = (flag ? object->isCutLeft() : false);
 		if (player->holdedMedCase != nullptr && player->holdedLarCase != nullptr) {
-<<<<<<< HEAD
 			flag = (flag ? object->getSize() <= 3 || (object->isCutLeft() && player->holdedLarCase->isCutRight()) : false);
-=======
-			flag = (flag ? object->getSize() <= 3 && object->isCutLeft() && player->holdedLarCase->isCutRight() : false);
->>>>>>> 6f20806653305e1fc1a664443e013adc63ab235b
 		} else if (player->holdedMedCase != nullptr) {
 			flag = (flag ? object->getSize() > 1 || (object->isCutLeft() && player->holdedMedCase->isCutRight()) : false);
 		} else if (player->holdedLarCase != nullptr) {
@@ -389,11 +377,7 @@ void StageData::moveUp() {
 	for (auto& object : stack) {
 		flag = (flag ? object->isCutDown() : false);
 		if (player->holdedMedCase != nullptr && player->holdedLarCase != nullptr) {
-<<<<<<< HEAD
 			flag = (flag ? object->getSize() <= 3 || (object->isCutDown() && player->holdedLarCase->isCutUp()) : false);
-=======
-			flag = (flag ? object->getSize() <= 3 && object->isCutDown() && player->holdedLarCase->isCutUp() : false);
->>>>>>> 6f20806653305e1fc1a664443e013adc63ab235b
 		} else if (player->holdedMedCase != nullptr) {
 			flag = (flag ? object->getSize() > 1 || (object->isCutDown() && player->holdedMedCase->isCutUp()) : false);
 		} else if (player->holdedLarCase != nullptr) {
