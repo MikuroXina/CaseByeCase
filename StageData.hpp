@@ -32,7 +32,7 @@ private:
   void moveUp();
 
 public:
-  StageData(std::vector<int> &&);
+  StageData(std::initializer_list<int> &&);
   bool mainLoop(SDL_Window *);
 };
 

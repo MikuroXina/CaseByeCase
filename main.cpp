@@ -17,6 +17,69 @@ void checkError() {
 int main() {
   std::cout << "Readying to lunch..." << std::endl;
 
+  // TileMap's format:
+  // 5x5, 0.Wall, 1.Space, 2.Start, 3.Goal, 4.Locked Door
+  // 5~8.Medium Case(Left, Down, Right, Up), 9~12.Large Case(Left, Down,
+  // Right, Up) 13~16.Medium Key Case(Left, Down, Right, Up), 17~20.Large Key
+  // Case(Left, Down, Right, Up)
+  std::vector<StageData> stages = {
+      {
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1,
+          1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      },
+      {
+          2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1,
+          0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 3,
+      },
+      {
+          0, 0, 0, 0,  0, 1, 1, 17, 0, 0, 2, 1, 1,
+          4, 3, 1, 13, 1, 0, 0, 0,  0, 0, 0, 0,
+      },
+      {
+          0, 0, 0, 0,  0, 0, 2, 1, 9, 0, 0, 1, 20,
+          1, 0, 0, 16, 1, 1, 4, 0, 0, 0, 0, 3,
+      },
+      {
+          0, 0, 0, 0,  0, 1, 10, 1, 0, 0, 15, 2, 18,
+          4, 3, 1, 12, 1, 0, 0,  0, 0, 0, 0,  0,
+      },
+      {
+          1, 1, 19, 1, 0, 1, 8, 16, 2, 0, 0, 4, 0,
+          0, 0, 0,  1, 0, 0, 0, 0,  3, 0, 0, 0,
+      },
+      {
+          0, 0,  0, 0, 0, 1, 1, 1, 10, 1, 1, 20, 9,
+          2, 16, 0, 4, 0, 0, 0, 0, 3,  0, 0, 0,
+      },
+      {
+          0, 0, 2, 1, 1, 1, 1, 11, 7, 1, 20, 13, 0,
+          1, 9, 1, 5, 0, 0, 0, 1,  1, 1, 4,  3,
+      },
+      {
+          1, 1,  1, 1, 10, 14, 1, 6,  12, 1,  1, 7, 2,
+          0, 20, 1, 9, 0,  0,  4, 11, 1,  17, 4, 3,
+      },
+      {
+          2,  5, 1, 0, 1,  0, 1, 1, 1, 14, 1, 18, 0,
+          12, 1, 1, 1, 11, 1, 0, 1, 0, 1,  4, 3,
+      },
+      {
+          2, 6, 1, 7, 1, 8, 1, 5, 1, 5, 1, 8, 0,
+          8, 1, 8, 2, 5, 0, 8, 1, 7, 1, 5, 3,
+      },
+      {
+          2, 6, 1, 7, 1, 8, 1, 5, 1, 5, 1, 8, 0,
+          8, 1, 8, 2, 5, 0, 8, 1, 7, 1, 5, 3,
+      },
+      {
+          11, 2, 1, 1, 1, 1, 16, 8, 8, 8,  0,  0, 0,
+          0,  1, 4, 1, 1, 1, 1,  3, 0, 20, 12, 0,
+      },
+      {
+          2, 1, 1, 1,  1,  13, 14, 15, 16, 1, 1, 1, 1,
+          1, 1, 1, 17, 18, 19, 20, 1,  1,  1, 1, 3,
+      }};
+
   SDL_Window *window{};
   SDL_GLContext context = NULL;
 
@@ -52,113 +115,12 @@ int main() {
 
   bool quit = false;
   do {
-    // TileMap's format:
-    // 5x5, 0.Wall, 1.Space, 2.Start, 3.Goal, 4.Locked Door
-    // 5~8.Medium Case(Left, Down, Right, Up), 9~12.Large Case(Left, Down,
-    // Right, Up) 13~16.Medium Key Case(Left, Down, Right, Up), 17~20.Large Key
-    // Case(Left, Down, Right, Up)
-    StageData stage1({
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1,
-        1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    });
-    while (stage1.mainLoop(window)) {
-      ;
+    for (auto &stage : stages) {
+      if (stage.mainLoop(window)) {
+        quit = true;
+        break;
+      }
     }
-
-    StageData stage2({
-        2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1,
-        0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 3,
-    });
-    while (stage2.mainLoop(window)) {
-      ;
-    }
-
-    StageData stage3({
-        0, 0, 0, 0,  0, 1, 1, 17, 0, 0, 2, 1, 1,
-        4, 3, 1, 13, 1, 0, 0, 0,  0, 0, 0, 0,
-    });
-    while (stage3.mainLoop(window)) {
-      ;
-    }
-
-    StageData stage4({
-        0, 0, 0, 0,  0, 0, 2, 1, 9, 0, 0, 1, 20,
-        1, 0, 0, 16, 1, 1, 4, 0, 0, 0, 0, 3,
-    });
-    while (stage4.mainLoop(window)) {
-      ;
-    }
-
-    StageData stage5({
-        0, 0, 0, 0,  0, 1, 10, 1, 0, 0, 15, 2, 18,
-        4, 3, 1, 12, 1, 0, 0,  0, 0, 0, 0,  0,
-    });
-    while (stage5.mainLoop(window)) {
-      ;
-    }
-
-    StageData stage6({
-        1, 1, 19, 1, 0, 1, 8, 16, 2, 0, 0, 4, 0,
-        0, 0, 0,  1, 0, 0, 0, 0,  3, 0, 0, 0,
-    });
-    while (stage6.mainLoop(window)) {
-      ;
-    }
-
-    StageData stage7({
-        0, 0,  0, 0, 0, 1, 1, 1, 10, 1, 1, 20, 9,
-        2, 16, 0, 4, 0, 0, 0, 0, 3,  0, 0, 0,
-    });
-    while (stage7.mainLoop(window)) {
-      ;
-    }
-
-    StageData stage8({
-        0, 0, 2, 1, 1, 1, 1, 11, 7, 1, 20, 13, 0,
-        1, 9, 1, 5, 0, 0, 0, 1,  1, 1, 4,  3,
-    });
-    while (stage8.mainLoop(window)) {
-      ;
-    }
-
-    StageData stage9({
-        1, 1,  1, 1, 10, 14, 1, 6,  12, 1,  1, 7, 2,
-        0, 20, 1, 9, 0,  0,  4, 11, 1,  17, 4, 3,
-    });
-    while (stage9.mainLoop(window)) {
-      ;
-    }
-
-    StageData stage10({
-        2,  5, 1, 0, 1,  0, 1, 1, 1, 14, 1, 18, 0,
-        12, 1, 1, 1, 11, 1, 0, 1, 0, 1,  4, 3,
-    });
-    while (stage10.mainLoop(window)) {
-      ;
-    }
-
-    StageData stage11({
-        2, 6, 1, 7, 1, 8, 1, 5, 1, 5, 1, 8, 0,
-        8, 1, 8, 2, 5, 0, 8, 1, 7, 1, 5, 3,
-    });
-    while (stage11.mainLoop(window)) {
-      ;
-    }
-
-    StageData stage12({
-        11, 2, 1, 1, 1, 1, 16, 8, 8, 8,  0,  0, 0,
-        0,  1, 4, 1, 1, 1, 1,  3, 0, 20, 12, 0,
-    });
-    while (stage12.mainLoop(window)) {
-      ;
-    }
-
-    // Ending
-    StageData ending({
-        2, 1, 1, 1,  1,  13, 14, 15, 16, 1, 1, 1, 1,
-        1, 1, 1, 17, 18, 19, 20, 1,  1,  1, 1, 3,
-    });
-    quit = ending.mainLoop(window);
   } while (!quit);
 
   std::cout << "Exiting..." << std::endl;

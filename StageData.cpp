@@ -7,7 +7,7 @@
 #include "Objects.hpp"
 #include "StageData.hpp"
 
-StageData::StageData(std::vector<int> &&tile) { tileMap = tile; }
+StageData::StageData(std::initializer_list<int> &&tile) { tileMap = tile; }
 
 void StageData::findObjectsAt(std::vector<ObjectBase *> *stack, int x, int y) {
   for (auto &object : objects) {
