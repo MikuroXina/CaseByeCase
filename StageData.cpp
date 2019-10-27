@@ -7,7 +7,10 @@
 #include "Objects.hpp"
 #include "StageData.hpp"
 
-StageData::StageData(std::initializer_list<int> &&tile) { tileMap = tile; }
+StageData::StageData(std::initializer_list<int> &&tile)
+    : player(std::make_unique<PlayerObject>()) {
+  tileMap = tile;
+}
 
 void StageData::findObjectsAt(std::vector<ObjectBase *> *stack, int x, int y) {
   for (auto &object : objects) {
@@ -29,7 +32,6 @@ bool StageData::mainLoop(SDL_Window *window) {
       std::cout << "Made a wall at " << i << std::endl;
     } else if (tileMap[i] == 2 && !isPlayerMade) {
       int x = i / 5, y = i % 5;
-      player = new PlayerObject;
       player->moveTo(x, y);
 
       std::cout << "Made a player at " << i << std::endl;
@@ -85,11 +87,6 @@ bool StageData::mainLoop(SDL_Window *window) {
     std::cout << "Error! The player creating has failed!" << std::endl;
   }
 
-  // Audio setup
-  lightSE = Mix_LoadWAV("lightSE.wav");
-  heavySE = Mix_LoadWAV("heavySE.wav");
-  goalSE = Mix_LoadWAV("goalSE.wav");
-
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
   SDL_Event event;
@@ -98,9 +95,7 @@ bool StageData::mainLoop(SDL_Window *window) {
     // If on the goal
     if (player->getPosX() == goalPosX && player->getPosY() == goalPosY) {
       SDL_Delay(500);
-      if (Mix_PlayChannel(-1, goalSE, 0) == -1) {
-        std::cout << "Error to play goalSE" << std::endl;
-      }
+      sound->goalSE();
       SDL_Delay(3000);
       quit = true;
     }
@@ -160,12 +155,6 @@ bool StageData::mainLoop(SDL_Window *window) {
     SDL_Delay(1);
   }
 
-  // Audio desturction
-  Mix_FreeChunk(lightSE);
-  Mix_FreeChunk(heavySE);
-  Mix_FreeChunk(goalSE);
-
-  delete player;
   for (auto &object : objects) {
     delete object;
   }
@@ -240,13 +229,9 @@ void StageData::moveLeft() {
       }
     }
     stack.clear();
-    if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-      std::cout << "Error to play lightSE" << std::endl;
-    }
+    sound->lightSE();
   } else {
-    if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
-      std::cout << "Error to play heavySE" << std::endl;
-    }
+    sound->heavySE();
   }
 }
 
@@ -316,13 +301,9 @@ void StageData::moveDown() {
       }
     }
     stack.clear();
-    if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-      std::cout << "Error to play lightSE" << std::endl;
-    }
+    sound->lightSE();
   } else {
-    if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
-      std::cout << "Error to play heavySE" << std::endl;
-    }
+    sound->heavySE();
   }
 }
 
@@ -392,13 +373,9 @@ void StageData::moveRight() {
       }
     }
     stack.clear();
-    if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-      std::cout << "Error to play lightSE" << std::endl;
-    }
+    sound->lightSE();
   } else {
-    if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
-      std::cout << "Error to play heavySE" << std::endl;
-    }
+    sound->heavySE();
   }
 }
 
@@ -466,12 +443,8 @@ void StageData::moveUp() {
       }
     }
     stack.clear();
-    if (Mix_PlayChannel(-1, lightSE, 0) == -1) {
-      std::cout << "Error to play lightSE" << std::endl;
-    }
+    sound->lightSE();
   } else {
-    if (Mix_PlayChannel(-1, heavySE, 0) == -1) {
-      std::cout << "Error to play heavySE" << std::endl;
-    }
+    sound->heavySE();
   }
 }

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 
+#include "Sound.hpp"
 #include "StageData.hpp"
 
 void checkError() {
@@ -16,6 +17,8 @@ void checkError() {
 
 int main() {
   std::cout << "Readying to lunch..." << std::endl;
+
+  auto se = std::make_unique<SEManager>();
 
   // TileMap's format:
   // 5x5, 0.Wall, 1.Space, 2.Start, 3.Goal, 4.Locked Door
@@ -113,6 +116,9 @@ int main() {
 
   glViewport(0, 0, width, height);
 
+  stages[0].setSoundHandler(se.get());
+  stages[0].mainLoop(window);
+  /*
   bool quit = false;
   do {
     for (auto &stage : stages) {
@@ -122,6 +128,7 @@ int main() {
       }
     }
   } while (!quit);
+  */
 
   std::cout << "Exiting..." << std::endl;
 

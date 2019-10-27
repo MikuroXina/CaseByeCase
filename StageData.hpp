@@ -5,7 +5,14 @@
 #include <SDL2/SDL_mixer.h>
 #include <vector>
 
-class ObjectBase;
+#include "Objects.hpp"
+
+class SoundHandler {
+public:
+  virtual void lightSE() = 0;
+  virtual void heavySE() = 0;
+  virtual void goalSE() = 0;
+};
 
 class StageData {
 private:
@@ -14,14 +21,14 @@ private:
   // 5~8.Medium Case(Left, Down, Right, Up), 9~12.Large Case(Left, Down, Right,
   // Up) 13~16.Medium Key Case(Left, Down, Right, Up), 17~20.Large Key
   // Case(Left, Down, Right, Up)
-  class PlayerObject *player;
+  std::unique_ptr<PlayerObject> player;
   std::vector<int> tileMap;
   std::vector<ObjectBase *> objects;
   bool isDoorLocked = true;
   int goalPosX, goalPosY;
   SDL_Renderer *renderer;
   std::vector<ObjectBase *> stack;
-  Mix_Chunk *lightSE, *heavySE, *goalSE;
+  SoundHandler *sound;
   int stackX = 0, stackY = 0;
   bool flag = false;
 
@@ -33,6 +40,10 @@ private:
 
 public:
   StageData(std::initializer_list<int> &&);
+  StageData(StageData &&) = default;
+  ~StageData() = default;
+
+  void setSoundHandler(SoundHandler *handler) { sound = handler; }
   bool mainLoop(SDL_Window *);
 };
 
