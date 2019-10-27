@@ -10,7 +10,7 @@ class SEManager : public SoundHandler {
 
 public:
   SEManager();
-  ~SEManager();
+  virtual ~SEManager() override;
 
 public:
   virtual void lightSE() override;

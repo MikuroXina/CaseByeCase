@@ -7,9 +7,72 @@
 #include "Objects.hpp"
 #include "StageData.hpp"
 
-StageData::StageData(std::initializer_list<int> &&tile)
+StageData::StageData(Tile tiles[25])
     : player(std::make_unique<PlayerObject>()) {
-  tileMap = tile;
+
+  // TileMap setup
+  for (int i = 0; i < 25; ++i) {
+    if (tiles[i] == Tile::Wall) {
+      auto newWall = new Wall;
+      int x = i / 5, y = i % 5;
+      newWall->moveTo(x, y);
+      objects.push_back(newWall);
+      std::cout << "Made a wall at " << i << std::endl;
+    } else if (tiles[i] == Tile::Start) {
+      int x = i / 5, y = i % 5;
+      player->moveTo(x, y);
+
+      std::cout << "Made a player at " << i << std::endl;
+    } else if (tiles[i] == Tile::Goal) {
+      goalPosX = i / 5;
+      goalPosY = i % 5;
+      std::cout << "The goal at (" << goalPosX << "," << goalPosY << ")"
+                << std::endl;
+    } else if (tiles[i] == Tile::LockedDoor) {
+      isDoorLocked = true;
+      int x = i / 5, y = i % 5;
+      auto newLockedDoor = new LockedDoor(&isDoorLocked);
+      newLockedDoor->moveTo(x, y);
+      objects.push_back(newLockedDoor);
+      std::cout << "Made a locked door at " << i << std::endl;
+    } else if (Tile::LeftMediumCase <= tiles[i] &&
+               tiles[i] <= Tile::UpMediumCase) {
+      auto direction = (int)tiles[i] - 5;
+      int x = i / 5, y = i % 5;
+      auto newMediumCase = new MediumCase(direction, false);
+      newMediumCase->moveTo(x, y);
+      objects.push_back(newMediumCase);
+      std::cout << "Made a medium case at " << i << ". Dir:" << direction
+                << std::endl;
+    } else if (Tile::LeftLargeCase <= tiles[i] &&
+               tiles[i] <= Tile::UpLargeCase) {
+      auto direction = (int)tiles[i] - 9;
+      int x = i / 5, y = i % 5;
+      auto newLargeCase = new LargeCase(direction, false);
+      newLargeCase->moveTo(x, y);
+      objects.push_back(newLargeCase);
+      std::cout << "Made a large case at " << i << ". Dir:" << direction
+                << std::endl;
+    } else if (Tile::KeyLeftMediumCase <= tiles[i] &&
+               tiles[i] <= Tile::KeyUpMediumCase) {
+      auto direction = (int)tiles[i] - 13;
+      int x = i / 5, y = i % 5;
+      auto newLargeCase = new MediumCase(direction, true);
+      newLargeCase->moveTo(x, y);
+      objects.push_back(newLargeCase);
+      std::cout << "Made a medium key case at " << i << ". Dir:" << direction
+                << std::endl;
+    } else if (Tile::KeyLeftLargeCase <= tiles[i] &&
+               tiles[i] <= Tile::KeyUpLargeCase) {
+      auto direction = (int)tiles[i] - 17;
+      int x = i / 5, y = i % 5;
+      auto newLargeCase = new LargeCase(direction, true);
+      newLargeCase->moveTo(x, y);
+      objects.push_back(newLargeCase);
+      std::cout << "Made a large key case at " << i << ". Dir:" << direction
+                << std::endl;
+    }
+  }
 }
 
 void StageData::findObjectsAt(std::vector<ObjectBase *> *stack, int x, int y) {
@@ -21,72 +84,6 @@ void StageData::findObjectsAt(std::vector<ObjectBase *> *stack, int x, int y) {
 }
 
 bool StageData::mainLoop(SDL_Window *window) {
-  // TileMap setup
-  bool isPlayerMade = false;
-  for (int i = 0; i < static_cast<int>(tileMap.size()); i += 1) {
-    if (tileMap[i] == 0) {
-      auto newWall = new Wall;
-      int x = i / 5, y = i % 5;
-      newWall->moveTo(x, y);
-      objects.push_back(newWall);
-      std::cout << "Made a wall at " << i << std::endl;
-    } else if (tileMap[i] == 2 && !isPlayerMade) {
-      int x = i / 5, y = i % 5;
-      player->moveTo(x, y);
-
-      std::cout << "Made a player at " << i << std::endl;
-      isPlayerMade = true;
-    } else if (tileMap[i] == 3) {
-      goalPosX = i / 5;
-      goalPosY = i % 5;
-      std::cout << "The goal at (" << goalPosX << "," << goalPosY << ")"
-                << std::endl;
-    } else if (tileMap[i] == 4) {
-      isDoorLocked = true;
-      int x = i / 5, y = i % 5;
-      auto newLockedDoor = new LockedDoor(&isDoorLocked);
-      newLockedDoor->moveTo(x, y);
-      objects.push_back(newLockedDoor);
-      std::cout << "Made a locked door at " << i << std::endl;
-    } else if (tileMap[i] >= 5 && tileMap[i] <= 8) {
-      auto direction = tileMap[i] - 5;
-      int x = i / 5, y = i % 5;
-      auto newMediumCase = new MediumCase(direction, false);
-      newMediumCase->moveTo(x, y);
-      objects.push_back(newMediumCase);
-      std::cout << "Made a medium case at " << i << ". Dir:" << direction
-                << std::endl;
-    } else if (tileMap[i] >= 9 && tileMap[i] <= 12) {
-      auto direction = tileMap[i] - 9;
-      int x = i / 5, y = i % 5;
-      auto newLargeCase = new LargeCase(direction, false);
-      newLargeCase->moveTo(x, y);
-      objects.push_back(newLargeCase);
-      std::cout << "Made a large case at " << i << ". Dir:" << direction
-                << std::endl;
-    } else if (tileMap[i] >= 13 && tileMap[i] <= 16) {
-      auto direction = tileMap[i] - 13;
-      int x = i / 5, y = i % 5;
-      auto newLargeCase = new MediumCase(direction, true);
-      newLargeCase->moveTo(x, y);
-      objects.push_back(newLargeCase);
-      std::cout << "Made a medium key case at " << i << ". Dir:" << direction
-                << std::endl;
-    } else if (tileMap[i] >= 17 && tileMap[i] <= 20) {
-      auto direction = tileMap[i] - 17;
-      int x = i / 5, y = i % 5;
-      auto newLargeCase = new LargeCase(direction, true);
-      newLargeCase->moveTo(x, y);
-      objects.push_back(newLargeCase);
-      std::cout << "Made a large key case at " << i << ". Dir:" << direction
-                << std::endl;
-    }
-  }
-
-  if (!isPlayerMade) {
-    std::cout << "Error! The player creating has failed!" << std::endl;
-  }
-
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
   SDL_Event event;

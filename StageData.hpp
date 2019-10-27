@@ -9,9 +9,35 @@
 
 class SoundHandler {
 public:
+  virtual ~SoundHandler() = default;
+
   virtual void lightSE() = 0;
   virtual void heavySE() = 0;
   virtual void goalSE() = 0;
+};
+
+enum struct Tile {
+  Wall,
+  Space,
+  Start,
+  Goal,
+  LockedDoor,
+  LeftMediumCase,
+  DownMediumCase,
+  RightMediumCase,
+  UpMediumCase,
+  LeftLargeCase,
+  DownLargeCase,
+  RightLargeCase,
+  UpLargeCase,
+  KeyLeftMediumCase,
+  KeyDownMediumCase,
+  KeyRightMediumCase,
+  KeyUpMediumCase,
+  KeyLeftLargeCase,
+  KeyDownLargeCase,
+  KeyRightLargeCase,
+  KeyUpLargeCase,
 };
 
 class StageData {
@@ -39,8 +65,9 @@ private:
   void moveUp();
 
 public:
-  StageData(std::initializer_list<int> &&);
+  StageData(Tile[25]);
   StageData(StageData &&) = default;
+  StageData(StageData const &) = delete;
   ~StageData() = default;
 
   void setSoundHandler(SoundHandler *handler) { sound = handler; }

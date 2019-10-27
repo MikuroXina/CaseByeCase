@@ -23,7 +23,7 @@ void SEManager::lightSE() {
 
 void SEManager::heavySE() {
   if (Mix_PlayChannel(-1, heavy, 0) == -1) {
-    std::cerr << "Error to play heavt SE" << std::endl;
+    std::cerr << "Error to play heavy SE" << std::endl;
   }
 }
 
