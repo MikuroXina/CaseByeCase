@@ -7,8 +7,8 @@ else
 endif
 LIBS      = /usr/local/Cellar/ftgl/2.1.3-rc5/lib/libftgl.dylib /usr/local/lib/libfreetype.dylib  /usr/local/lib/libSDL2.dylib /usr/local/lib/libSDL2_mixer.dylib /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib
 INCLUDE   = -I/usr/local/include/freetype2/ -I/usr/local/include/
-TARGET    = ./bin.out
-SRCDIR    = ./
+TARGET    = ./a.out
+SRCDIR    = ./src
 ifeq "$(strip $(SRCDIR))" ""
   SRCDIR  = .
 endif
