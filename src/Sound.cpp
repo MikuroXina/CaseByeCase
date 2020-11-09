@@ -4,9 +4,9 @@
 #include <iostream>
 
 SEManager::SEManager() {
-  light = Mix_LoadWAV("lightSE.wav");
-  heavy = Mix_LoadWAV("heavySE.wav");
-  goal = Mix_LoadWAV("goalSE.wav");
+  light = Mix_LoadWAV("assets/lightSE.wav");
+  heavy = Mix_LoadWAV("assets/heavySE.wav");
+  goal = Mix_LoadWAV("assets/goalSE.wav");
 }
 
 SEManager::~SEManager() {
