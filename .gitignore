@@ -35,3 +35,8 @@
 # ccls
 .ccls-cache
 .ccls
+
+# build and cache
+.cache/
+compile_commands.json
+build/
