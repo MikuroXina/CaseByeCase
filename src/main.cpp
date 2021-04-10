@@ -10,7 +10,7 @@
 void checkError() {
   const char *error = SDL_GetError();
   if (*error != '\0') {
-    std::cout << "SDL Error:" << error << std::endl;
+    std::cout << "SDL Error: " << error << std::endl;
     SDL_ClearError();
   }
 }
@@ -130,15 +130,14 @@ int main() {
       Tile::Space, Tile::Space, Tile::Space, Tile::Space, Tile::Goal,
   }*/
 
-  // start the window
-  SDL_Window *window{};
-  SDL_GLContext context = NULL;
-
-  if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+  if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     std::cout << std::string(SDL_GetError()) << std::endl;
   }
 
+  SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -147,15 +146,15 @@ int main() {
 
   constexpr Uint32 width = 500;
   constexpr Uint32 height = 500;
-  window = SDL_CreateWindow("Case Bye Case", SDL_WINDOWPOS_CENTERED,
-                            SDL_WINDOWPOS_CENTERED, width, height,
-                            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+  SDL_Window *window = SDL_CreateWindow("Case Bye Case", SDL_WINDOWPOS_CENTERED,
+                                        SDL_WINDOWPOS_CENTERED, width, height,
+                                        SDL_WINDOW_OPENGL);
   if (!window) {
     std::cout << "Unable to create a window!" << std::endl;
   }
   checkError();
 
-  context = SDL_GL_CreateContext(window);
+  SDL_GLContext context = SDL_GL_CreateContext(window);
   checkError();
 
   SDL_GL_SetSwapInterval(1);
