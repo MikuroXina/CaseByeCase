@@ -36,7 +36,13 @@
 .ccls-cache
 .ccls
 
-# build and cache
+# cache
 .cache/
 compile_commands.json
-build/
+
+# build
+cmake_install.cmake
+CMakeCache.txt
+CMakeFiles/
+Game
+Makefile
