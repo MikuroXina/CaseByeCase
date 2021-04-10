@@ -93,7 +93,7 @@ bool StageData::mainLoop(SDL_Window *window) {
     if (player->getPosX() == goalPosX && player->getPosY() == goalPosY) {
       SDL_Delay(500);
       sound->goalSE();
-      SDL_Delay(3000);
+      SDL_Delay(1500);
       quit = true;
     }
 
