@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(CaseByCase)
+project(CaseByeCase)
 
 add_executable(Game
   src/main.cpp
